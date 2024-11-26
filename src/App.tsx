@@ -1,5 +1,5 @@
 import './App.css'
-import NavDrawer from './components/NavDrawer';
+import NavDrawer from './components/nav/NavDrawer';
 import AppRoutes from './routes/AppRoutes';
 
 function App() {
