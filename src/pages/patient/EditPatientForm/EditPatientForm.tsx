@@ -1,9 +1,10 @@
 import { useReducer } from "react";
-import Form from "../../components/form/Form";
-import styles from "./PatientForm.module.css";
+import Form from "../../../components/form/Form";
+import styles from "./EditPatientForm.module.css";
 import { Button } from "@mui/material";
-import { insertPatient } from "../../util/requests/patientRequest";
+import { insertPatient, updatePatient } from "../../../util/requests/patientRequest";
 import { useMutation } from "@tanstack/react-query";
+import useStore from "../../../util/store/store";
 
 type PatientReducerState = {
   name: string,
@@ -18,7 +19,8 @@ type ActionType = {
   payload: string
 }
 
-function PatientForm(){
+function EditPatientForm(){
+  const {editFormData} = useStore();
   const [state, dispatch] = useReducer((state: PatientReducerState, action:ActionType) => {
     if(action.type === 'name'){
       return {...state, name:action.payload};
@@ -31,21 +33,15 @@ function PatientForm(){
     } else if(action.type === 'contactNo'){
       return {...state, contactNo:action.payload};
     } 
-  }, {
-    name: '',
-    icNo: '',
-    gender: '',
-    address: '',
-    contactNo: '',
-  });
+  }, editFormData);
 
   const mutation = useMutation({
-    mutationFn: insertPatient,
+    mutationFn: updatePatient,
     onSuccess: (data) => {
-      console.log('patient created:', data);
+      console.log('patient edited:', data);
     },
     onError: (error) => {
-      console.error('Error creating patient:', error);
+      console.error('Error editing patient:', error);
     }
   });
 
@@ -54,18 +50,23 @@ function PatientForm(){
   }
 
   const handleFormSubmit = () => {
-    mutation.mutate(state);
+    const payload = {
+      params: editFormData.patientId,
+      formState: state
+    };
+
+    mutation.mutate(payload);
   }
 
   return(
     <section className={styles.mainCont}>
-      <h1>Add Patient</h1>
+      <h1>Edit Patient</h1>
       <Form handleDispatch={handleDispatch} state={state} formType="patient"/>
       <div className={styles.button}>
-        <Button variant="contained" size="large" onClick={handleFormSubmit}>Add New Patient</Button>
+        <Button variant="contained" size="large" onClick={handleFormSubmit}>Edit Patient</Button>
       </div>
     </section>
   )
 }
 
-export default PatientForm;
+export default EditPatientForm;

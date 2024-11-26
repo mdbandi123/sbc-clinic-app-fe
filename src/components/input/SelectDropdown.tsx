@@ -3,12 +3,12 @@ import React, {ReactNode, useState} from "react";
 
 type SelectDropdownProps = {
   label: string,
-  handleChange: (e: SelectChangeEvent) => void,
+  onChange: (e: SelectChangeEvent) => void,
   children: ReactNode
   value: string,
   isRequired?: boolean
 }
-function SelectDropdown({label, handleChange, children, value, isRequired = false}: SelectDropdownProps){
+function SelectDropdown({label, onChange, children, value, isRequired = false}: SelectDropdownProps){
   return(
     <>
       <FormControl fullWidth required={isRequired}>
@@ -18,7 +18,7 @@ function SelectDropdown({label, handleChange, children, value, isRequired = fals
           id="demo-simple-select"
           value={value}
           label={label}
-          onChange={handleChange}
+          onChange={onChange}
         >
           {children}
         </Select>

@@ -1,5 +1,5 @@
 import { Grid2, MenuItem, SelectChangeEvent, TextField } from "@mui/material";
-import SelectDropdown from "./SelectDropdown";
+import SelectDropdown from "../input/SelectDropdown";
 import { ChangeEventHandler} from "react";
 
 type DispatchParams = {
@@ -52,7 +52,7 @@ function Form({state, handleDispatch, formType}: FormProps){
         />
       </Grid2>
       <Grid2 size={3}>
-        <SelectDropdown label={"Gender"} handleChange={handleGenderChange} value={state.gender} isRequired={true}>
+        <SelectDropdown label={"Gender"} onChange={handleGenderChange} value={state.gender} isRequired={true}>
           <MenuItem value="male">Male</MenuItem>
           <MenuItem value="female">Female</MenuItem>
         </SelectDropdown>
@@ -90,7 +90,7 @@ function Form({state, handleDispatch, formType}: FormProps){
       </Grid2>
       {formType === 'staff' && (
       <Grid2 size={3}>
-        <SelectDropdown label={"Position"} handleChange={handlePositionChange} value={state.position} isRequired={true}>
+        <SelectDropdown label={"Position"} onChange={handlePositionChange} value={state.position} isRequired={true}>
           <MenuItem value="doctor">Doctor</MenuItem>
           <MenuItem value="nurse">Nurse</MenuItem>
         </SelectDropdown>

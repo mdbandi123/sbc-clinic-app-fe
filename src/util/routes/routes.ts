@@ -1,7 +1,20 @@
-export const routes = {
-  home: "/",
+export const BASE_URL = "http://localhost:8080";
+
+const patientRoutes = {
   addPatient: "/patient/add",
-  addStaff: "/staff/add"
+  searchPatient: "/patient/details",
+  editPatient: "/patiend/details/edit"
 }
 
-export const BASE_URL = "http://localhost:8080";
+const staffRoutes = {
+  addStaff: "/staff/add",
+}
+
+export const routes = {
+  home: "/",
+  ...patientRoutes,
+  ...staffRoutes
+}
+
+
+
