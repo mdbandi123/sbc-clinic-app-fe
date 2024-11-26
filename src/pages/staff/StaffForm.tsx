@@ -1,16 +1,17 @@
-import { useReducer } from "react";
-import Form from "../../components/form/Form";
-import styles from "./PatientForm.module.css";
-import { Button } from "@mui/material";
-import { insertPatient } from "../../util/requests/patientRequest";
-import { useMutation } from "@tanstack/react-query";
+import { useReducer } from 'react';
+import styles from './StaffForm.module.css';
+import { useMutation } from '@tanstack/react-query';
+import { Button } from '@mui/material';
+import Form from '../../components/form/Form';
+import { insertStaff } from '../../util/requests/staffRequest';
 
-type PatientReducerState = {
+type StaffState = {
   name: string,
   icNo: string,
   gender: string,
   address: string,
   contactNo: string,
+  position: string
 }
 
 type ActionType = {
@@ -18,8 +19,8 @@ type ActionType = {
   payload: string
 }
 
-function PatientForm(){
-  const [state, dispatch] = useReducer((state: PatientReducerState, action:ActionType) => {
+function StaffForm(){
+  const [state, dispatch] = useReducer((state: StaffState, action:ActionType) => {
     if(action.type === 'name'){
       return {...state, name:action.payload};
     } else if(action.type === 'icNo'){
@@ -30,6 +31,8 @@ function PatientForm(){
       return {...state, address:action.payload};
     } else if(action.type === 'contactNo'){
       return {...state, contactNo:action.payload};
+    } else if(action.type === 'position'){
+      return {...state, position:action.payload};
     } 
   }, {
     name: '',
@@ -37,15 +40,16 @@ function PatientForm(){
     gender: '',
     address: '',
     contactNo: '',
+    position: '',
   });
 
   const mutation = useMutation({
-    mutationFn: insertPatient,
+    mutationFn: insertStaff,
     onSuccess: (data) => {
-      console.log('patient created:', data);
+      console.log('staff created:', data);
     },
     onError: (error) => {
-      console.error('Error creating patient:', error);
+      console.error('Error creating staff:', error);
     }
   });
 
@@ -56,11 +60,11 @@ function PatientForm(){
   const handleFormSubmit = () => {
     mutation.mutate(state);
   }
-
+  
   return(
     <section className={styles.mainCont}>
-      <h1>Add Patient</h1>
-      <Form handleDispatch={handleDispatch} state={state} formType="patient"/>
+      <h1>Add Staff</h1>
+      <Form handleDispatch={handleDispatch} state={state} formType="staff"/>
       <div className={styles.button}>
         <Button variant="contained" size="large" onClick={handleFormSubmit}>Add New Patient</Button>
       </div>
@@ -68,4 +72,5 @@ function PatientForm(){
   )
 }
 
-export default PatientForm;
+export default StaffForm;
+

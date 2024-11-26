@@ -18,8 +18,8 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import Collapse from '@mui/material/Collapse/Collapse';
 import StarBorder from '@mui/icons-material/StarBorder';
 import NavButton from './NavButton';
-import { Accessible, Add, AddBox, CalendarMonth, Edit, FormatListBulleted, Home, MedicalInformation, PersonAdd, PersonSearch, Search } from '@mui/icons-material';
-import { routes } from '../../routes/routes';
+import { Accessible, Add, AddBox, CalendarMonth, Edit, FormatListBulleted, Home, MedicalInformation, PersonAdd, PersonSearch, Search, SupervisorAccount } from '@mui/icons-material';
+import { routes } from '../../util/routes/routes';
 import NavCollapsingButton from './NavCollapsingButton';
 import SbcLogo from "../../assets/sbclogo.jpg";
 
@@ -79,6 +79,12 @@ export default function NavDrawer({children}: NavDrawerProps) {
           </NavCollapsingButton>
         </List>
         <Divider/>
+        <List>
+          <NavCollapsingButton text="Staff" icon={<SupervisorAccount/>}>
+          <NavButton text="Add New" icon={<PersonAdd/>} path={routes.addStaff} isNestedElement={true}/>
+            <NavButton text="List All" icon={<FormatListBulleted/>} path={routes.home} isNestedElement={true}/>
+          </NavCollapsingButton>
+        </List>
       </Drawer>
       <Box
         component="main"

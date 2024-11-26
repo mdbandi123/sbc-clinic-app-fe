@@ -89,7 +89,7 @@ function Form({state, handleDispatch, formType}: FormProps){
         />
       </Grid2>
       {formType === 'staff' && (
-      <Grid2 size={6}>
+      <Grid2 size={3}>
         <SelectDropdown label={"Position"} handleChange={handlePositionChange} value={state.position} isRequired={true}>
           <MenuItem value="doctor">Doctor</MenuItem>
           <MenuItem value="nurse">Nurse</MenuItem>
