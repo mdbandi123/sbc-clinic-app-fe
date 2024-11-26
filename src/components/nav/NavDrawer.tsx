@@ -65,7 +65,7 @@ export default function NavDrawer({children}: NavDrawerProps) {
         <Divider />
         <List>
           <NavCollapsingButton text="Patient" icon={<Accessible/>}>
-            <NavButton text="Add New" icon={<PersonAdd/>} path={routes.home} isNestedElement={true}/>
+            <NavButton text="Add New" icon={<PersonAdd/>} path={routes.addPatient} isNestedElement={true}/>
             <NavButton text="Find Existing" icon={<PersonSearch/>} path={routes.home} isNestedElement={true}/>
           </NavCollapsingButton>
           <NavCollapsingButton text="Appointment" icon={<CalendarMonth/>}>
@@ -76,7 +76,6 @@ export default function NavDrawer({children}: NavDrawerProps) {
             <NavButton text="New Report" icon={<AddBox/>} path={routes.home} isNestedElement={true}/>
             <NavButton text="New Medical Certificate" icon={<AddBox/>} path={routes.home} isNestedElement={true}/>
             <NavButton text="Search Reports" icon={<Search/>} path={routes.home} isNestedElement={true}/>
-
           </NavCollapsingButton>
         </List>
         <Divider/>
