@@ -11,6 +11,11 @@ export const insertPatient = async (formState) => {
   return response.data;
 }
 
+export const getAllPatients = async () => {
+  const response = await axios.get(`${BASE_URL}/api/patient/details/list/all`);
+  return response.data;
+}
+
 export const getPatientById = async (params) => {
   console.log(`${BASE_URL}/api/patient/details/id/${params}`);
   const response = await axios.get(`${BASE_URL}/api/patient/details/id/${params}`);

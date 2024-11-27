@@ -3,12 +3,13 @@ import { Button, Grid2, InputAdornment, MenuItem, SelectChangeEvent, TextField }
 import SearchField from "../../../components/input/SearchField";
 import SelectDropdown from "../../../components/input/SelectDropdown";
 import styles from "./SearchPatient.module.css";
-import { useState } from "react";
-import { getPatientByIcNo, getPatientById, getPatientByName } from "../../../util/requests/patientRequest";
+import { useEffect, useState } from "react";
+import { getAllPatients, getPatientByIcNo, getPatientById, getPatientByName } from "../../../util/requests/patientRequest";
 import DataTable, { Column } from "../../../components/table/DataTable";
 import useStore from "../../../util/store/store";
 import { useNavigate } from "react-router";
 import { routes } from "../../../util/routes/routes";
+import { useQuery } from "@tanstack/react-query";
 
 type PatientResponse = {
   patientId: number,
@@ -49,9 +50,19 @@ const columns: readonly Column[] = [
 function SearchPatient(){
   const [searchType, setSearchType] = useState<string>('');
   const [searchText, setSearchText] = useState<string>('');
-  const [patientList, setPatientList] = useState<PatientResponse[]>([]);
   const {setPatientEditFormData, patientEditFormData} = useStore();
   const navigate = useNavigate();
+  const {data, isFetched} = useQuery({
+    queryKey: ['patient'],
+    queryFn: getAllPatients
+  })
+  const [patientList, setPatientList] = useState<PatientResponse[]>([]);
+
+  useEffect(()=>{
+    if(isFetched){
+      setPatientList(data);
+    }
+  },[isFetched])
 
   const handleSearchByChange = (e: SelectChangeEvent) => {
     setSearchType(e.target.value);

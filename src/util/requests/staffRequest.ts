@@ -12,8 +12,12 @@ export const insertStaff = async (formState) => {
   return response.data;
 }
 
+export const getAllStaff = async () => {
+  const response = await axios.get(`${BASE_URL}/api/staff/details/list/all`);
+  return response.data;
+}
+
 export const getStaffById = async (params) => {
-  console.log(`${BASE_URL}/api/Staff/details/id/${params}`);
   const response = await axios.get(`${BASE_URL}/api/staff/details/id/${params}`);
   return response.data;
 }
