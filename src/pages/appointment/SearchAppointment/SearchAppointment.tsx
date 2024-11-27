@@ -96,7 +96,7 @@ function SearchAppointment() {
   };
 
   const handleEditAppointmentArrivalStatus = async (payload) => {
-    const response = updateAppointmentArrivalStatus({params: payload.appointmentId, formState: {isArrival: true}});
+    const response = updateAppointmentArrivalStatus({params: payload.appointmentId, formState: {isArrival: true, fkPatientId: payload.patientId}});
     const data = await response;
     console.log(data);
   };
