@@ -37,6 +37,10 @@ function Form({state, handleDispatch, formType}: FormProps){
     handleDispatch({type: 'contactNo', payload: e.target.value})
   } 
 
+  const handleEmailChange:ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (e) => {
+    handleDispatch({type: 'email', payload: e.target.value})
+  } 
+
   const handlePositionChange = (e: SelectChangeEvent) => {
     handleDispatch({type: 'position', payload: e.target.value})
   }
@@ -103,6 +107,17 @@ function Form({state, handleDispatch, formType}: FormProps){
           </SelectDropdown>
         </Grid2>
         )}
+        <Grid2 size={7}>
+          <TextField
+            required
+            id="outlined-required"
+            label="Email"
+            value={state.email}
+            onChange={handleEmailChange}
+            sx={{width:'100%'}}
+            multiline
+          />
+        </Grid2>
       </Grid2>
       )
     }

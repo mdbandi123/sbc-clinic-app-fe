@@ -12,7 +12,8 @@ type StaffState = {
   gender: string,
   address: string,
   contactNo: string,
-  position: string
+  position: string,
+  email: string
 }
 
 type ActionType = {
@@ -35,6 +36,8 @@ function EditStaffForm(){
       return {...state, contactNo:action.payload};
     } else if(action.type === 'position'){
       return {...state, position:action.payload};
+    } else if(action.type === 'email'){
+      return {...state, email:action.payload};
     } 
   }, staffEditFormData);
 
@@ -66,7 +69,7 @@ function EditStaffForm(){
       <h1>Edit Staff</h1>
       <Form handleDispatch={handleDispatch} state={state} formType="staff"/>
       <div className={styles.button}>
-        <Button variant="contained" size="large" onClick={handleFormSubmit}>Edit Patient</Button>
+        <Button variant="contained" size="large" onClick={handleFormSubmit}>Edit Staff</Button>
       </div>
     </section>
   )

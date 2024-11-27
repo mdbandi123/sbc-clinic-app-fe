@@ -11,7 +11,8 @@ type StaffState = {
   gender: string,
   address: string,
   contactNo: string,
-  position: string
+  position: string,
+  email: string
 }
 
 type ActionType = {
@@ -33,6 +34,8 @@ function AddStaffForm(){
       return {...state, contactNo:action.payload};
     } else if(action.type === 'position'){
       return {...state, position:action.payload};
+    } else if(action.type === 'email'){
+      return {...state, email:action.payload};
     } 
   }, {
     name: '',
@@ -41,6 +44,7 @@ function AddStaffForm(){
     address: '',
     contactNo: '',
     position: '',
+    email: ''
   });
 
   const mutation = useMutation({

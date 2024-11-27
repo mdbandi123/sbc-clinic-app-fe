@@ -11,6 +11,7 @@ type PatientReducerState = {
   gender: string,
   address: string,
   contactNo: string,
+  email: string
 }
 
 type ActionType = {
@@ -30,6 +31,8 @@ function AddPatientForm(){
       return {...state, address:action.payload};
     } else if(action.type === 'contactNo'){
       return {...state, contactNo:action.payload};
+    } else if(action.type === 'email'){
+      return {...state, email:action.payload};
     } 
   }, {
     name: '',
@@ -37,6 +40,7 @@ function AddPatientForm(){
     gender: '',
     address: '',
     contactNo: '',
+    email: ''
   });
 
   const mutation = useMutation({

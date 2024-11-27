@@ -12,6 +12,7 @@ type PatientReducerState = {
   gender: string,
   address: string,
   contactNo: string,
+  email: string
 }
 
 type ActionType = {
@@ -32,6 +33,8 @@ function EditPatientForm(){
       return {...state, address:action.payload};
     } else if(action.type === 'contactNo'){
       return {...state, contactNo:action.payload};
+    } else if(action.type === 'email'){
+      return {...state, email:action.payload};
     } 
   }, patientEditFormData);
 

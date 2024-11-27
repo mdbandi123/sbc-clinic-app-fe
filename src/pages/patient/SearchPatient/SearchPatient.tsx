@@ -41,6 +41,11 @@ const columns: readonly Column[] = [
     minWidth: 100,
   },
   {
+    id: 'email',
+    label: 'Email',
+    minWidth: 100,
+  },
+  {
     id: 'action',
     label: 'Action',
     minWidth: 100,
