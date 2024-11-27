@@ -13,7 +13,8 @@ const staffRoutes = {
 }
 
 const appointmentRoutes = {
-  addAppointment: "/appointment/add"
+  addAppointment: "/appointment/add",
+  searchAppointment: "/appointment/details"
 }
 
 export const routes = {

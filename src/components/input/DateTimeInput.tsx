@@ -8,6 +8,7 @@ function DateTimeInput({handleDispatch}) {
   const handleDateTimeChange = (value) => {
     handleDispatch({type: 'date', payload: value.format('YYYY-MM-DDTHH:mm:ss')});
   }
+  
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DateTimePicker label="Schedule Date & Time" onChange={handleDateTimeChange}/>
