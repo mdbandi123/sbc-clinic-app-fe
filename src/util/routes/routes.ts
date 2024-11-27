@@ -12,10 +12,15 @@ const staffRoutes = {
   editStaff: "/staff/details/edit"
 }
 
+const appointmentRoutes = {
+  addAppointment: "/appointment/add"
+}
+
 export const routes = {
   home: "/",
   ...patientRoutes,
-  ...staffRoutes
+  ...staffRoutes,
+  ...appointmentRoutes
 }
 
 
