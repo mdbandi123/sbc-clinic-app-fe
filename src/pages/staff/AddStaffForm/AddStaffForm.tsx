@@ -1,9 +1,9 @@
 import { useReducer } from 'react';
-import styles from './StaffForm.module.css';
+import styles from './AddStaffForm.module.css';
 import { useMutation } from '@tanstack/react-query';
 import { Button } from '@mui/material';
-import Form from '../../components/form/Form';
-import { insertStaff } from '../../util/requests/staffRequest';
+import Form from '../../../components/form/Form';
+import { insertStaff } from '../../../util/requests/staffRequest';
 
 type StaffState = {
   name: string,
@@ -19,7 +19,7 @@ type ActionType = {
   payload: string
 }
 
-function StaffForm(){
+function AddStaffForm(){
   const [state, dispatch] = useReducer((state: StaffState, action:ActionType) => {
     if(action.type === 'name'){
       return {...state, name:action.payload};
@@ -72,5 +72,5 @@ function StaffForm(){
   )
 }
 
-export default StaffForm;
+export default AddStaffForm;
 

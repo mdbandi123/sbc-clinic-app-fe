@@ -53,8 +53,8 @@ function Form({state, handleDispatch, formType}: FormProps){
       </Grid2>
       <Grid2 size={3}>
         <SelectDropdown label={"Gender"} onChange={handleGenderChange} value={state.gender} isRequired={true}>
-          <MenuItem value="male">Male</MenuItem>
-          <MenuItem value="female">Female</MenuItem>
+          <MenuItem value="Male">Male</MenuItem>
+          <MenuItem value="Female">Female</MenuItem>
         </SelectDropdown>
       </Grid2>
       <Grid2 size={7}>
@@ -91,8 +91,8 @@ function Form({state, handleDispatch, formType}: FormProps){
       {formType === 'staff' && (
       <Grid2 size={3}>
         <SelectDropdown label={"Position"} onChange={handlePositionChange} value={state.position} isRequired={true}>
-          <MenuItem value="doctor">Doctor</MenuItem>
-          <MenuItem value="nurse">Nurse</MenuItem>
+          <MenuItem value="Doctor">Doctor</MenuItem>
+          <MenuItem value="Nurse">Nurse</MenuItem>
         </SelectDropdown>
       </Grid2>
       )}

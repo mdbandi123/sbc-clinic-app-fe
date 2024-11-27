@@ -8,6 +8,8 @@ const patientRoutes = {
 
 const staffRoutes = {
   addStaff: "/staff/add",
+  searchStaff: "/staff/details",
+  editStaff: "/staff/details/edit"
 }
 
 export const routes = {

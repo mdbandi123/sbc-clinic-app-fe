@@ -11,3 +11,28 @@ export const insertStaff = async (formState) => {
   
   return response.data;
 }
+
+export const getStaffById = async (params) => {
+  console.log(`${BASE_URL}/api/Staff/details/id/${params}`);
+  const response = await axios.get(`${BASE_URL}/api/staff/details/id/${params}`);
+  return response.data;
+}
+
+export const getStaffByIcNo = async (params) => {
+  const response = await axios.get(`${BASE_URL}/api/staff/details/icno/${params}`);
+  return response.data;
+}
+
+export const getStaffByName = async (params) => {
+  const response = await axios.get(`${BASE_URL}/api/staff/details/name/${params}`);
+  return response.data;
+}
+
+export const updateStaff = async ({params,formState}) => {
+  const response = await axios.patch(`${BASE_URL}/api/staff/update/${params}`, formState, {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+  return response.data;
+}

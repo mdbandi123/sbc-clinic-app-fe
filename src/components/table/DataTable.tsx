@@ -9,51 +9,16 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { Button } from '@mui/material';
 
-interface Column {
-  id: 'name' | 'icNo' | 'gender' | 'address' | 'contactNo' | 'action';
+export interface Column {
+  id: 'name' | 'icNo' | 'gender' | 'address' | 'contactNo' | 'action' | 'position';
   label: string;
   minWidth?: number;
   align?: 'right';
   format?: (value: number) => string;
 }
 
-const columns: readonly Column[] = [
-  { id: 'name', label: 'Name', minWidth: 100 },
-  { id: 'icNo', label: 'IC No.', minWidth: 100 },
-  {
-    id: 'gender',
-    label: 'Gender',
-    minWidth: 50,
-  },
-  {
-    id: 'address',
-    label: 'Address',
-    minWidth: 100,
-  },
-  {
-    id: 'contactNo',
-    label: 'Contact No.',
-    minWidth: 100,
-  },
-  {
-    id: 'action',
-    label: 'Action',
-    minWidth: 100,
-  },
-];
 
-type Patient = {
-  patientId: number,
-  name: string,
-  icNo: string,
-  gender: string,
-  address: string,
-  contactNo: string,
-  registrationTime: string,
-  profileImage: string
-}
-
-function DataTable({rows, action}) {
+function DataTable({rows, action, columns}) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 

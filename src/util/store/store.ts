@@ -1,8 +1,10 @@
-import {create} from 'zustand';
+import { create } from "zustand";
 
 const useStore = create((set) => ({
-  editFormData: {},
-  setEditFormData: (newData) => set({editFormData: newData})
+  patientEditFormData: {},
+  staffEditFormData: {},
+  setPatientEditFormData: (newData) => set({ patientEditFormData: newData }),
+  setStaffEditFormData: (newData) => set({ staffEditFormData: newData }),
 }));
 
 export default useStore;

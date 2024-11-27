@@ -1,17 +1,18 @@
-import { useReducer } from "react";
-import Form from "../../../components/form/Form";
-import styles from "./EditPatientForm.module.css";
-import { Button } from "@mui/material";
-import { insertPatient, updatePatient } from "../../../util/requests/patientRequest";
-import { useMutation } from "@tanstack/react-query";
-import useStore from "../../../util/store/store";
+import { useReducer } from 'react';
+import styles from './EditStaffForm.module.css';
+import { useMutation } from '@tanstack/react-query';
+import { Button } from '@mui/material';
+import Form from '../../../components/form/Form';
+import { insertStaff, updateStaff } from '../../../util/requests/staffRequest';
+import useStore from '../../../util/store/store';
 
-type PatientReducerState = {
+type StaffState = {
   name: string,
   icNo: string,
   gender: string,
   address: string,
   contactNo: string,
+  position: string
 }
 
 type ActionType = {
@@ -19,9 +20,9 @@ type ActionType = {
   payload: string
 }
 
-function EditPatientForm(){
-  const {patientEditFormData} = useStore();
-  const [state, dispatch] = useReducer((state: PatientReducerState, action:ActionType) => {
+function EditStaffForm(){
+  const {staffEditFormData} = useStore();
+  const [state, dispatch] = useReducer((state: StaffState, action:ActionType) => {
     if(action.type === 'name'){
       return {...state, name:action.payload};
     } else if(action.type === 'icNo'){
@@ -32,16 +33,18 @@ function EditPatientForm(){
       return {...state, address:action.payload};
     } else if(action.type === 'contactNo'){
       return {...state, contactNo:action.payload};
+    } else if(action.type === 'position'){
+      return {...state, position:action.payload};
     } 
-  }, patientEditFormData);
+  }, staffEditFormData);
 
   const mutation = useMutation({
-    mutationFn: updatePatient,
+    mutationFn: updateStaff,
     onSuccess: (data) => {
-      console.log('patient edited:', data);
+      console.log('staff updated:', data);
     },
     onError: (error) => {
-      console.error('Error editing patient:', error);
+      console.error('Error updating staff:', error);
     }
   });
 
@@ -51,17 +54,17 @@ function EditPatientForm(){
 
   const handleFormSubmit = () => {
     const payload = {
-      params: patientEditFormData.patientId,
+      params: staffEditFormData.staffId,
       formState: state
     };
 
     mutation.mutate(payload);
   }
-
+  
   return(
     <section className={styles.mainCont}>
-      <h1>Edit Patient</h1>
-      <Form handleDispatch={handleDispatch} state={state} formType="patient"/>
+      <h1>Edit Staff</h1>
+      <Form handleDispatch={handleDispatch} state={state} formType="staff"/>
       <div className={styles.button}>
         <Button variant="contained" size="large" onClick={handleFormSubmit}>Edit Patient</Button>
       </div>
@@ -69,4 +72,5 @@ function EditPatientForm(){
   )
 }
 
-export default EditPatientForm;
+export default EditStaffForm;
+

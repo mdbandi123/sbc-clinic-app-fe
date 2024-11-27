@@ -82,7 +82,7 @@ export default function NavDrawer({children}: NavDrawerProps) {
         <List>
           <NavCollapsingButton text="Staff" icon={<SupervisorAccount/>}>
           <NavButton text="Add New" icon={<PersonAdd/>} path={routes.addStaff} isNestedElement={true}/>
-            <NavButton text="List All" icon={<FormatListBulleted/>} path={routes.home} isNestedElement={true}/>
+            <NavButton text="List All" icon={<FormatListBulleted/>} path={routes.searchStaff} isNestedElement={true}/>
           </NavCollapsingButton>
         </List>
       </Drawer>

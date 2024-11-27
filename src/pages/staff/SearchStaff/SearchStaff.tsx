@@ -2,23 +2,25 @@ import { Search } from "@mui/icons-material";
 import { Button, Grid2, InputAdornment, MenuItem, SelectChangeEvent, TextField } from "@mui/material";
 import SearchField from "../../../components/input/SearchField";
 import SelectDropdown from "../../../components/input/SelectDropdown";
-import styles from "./SearchPatient.module.css";
+import styles from "./SearchStaff.module.css";
 import { useState } from "react";
 import { getPatientByIcNo, getPatientById, getPatientByName } from "../../../util/requests/patientRequest";
 import DataTable, { Column } from "../../../components/table/DataTable";
 import useStore from "../../../util/store/store";
 import { useNavigate } from "react-router";
 import { routes } from "../../../util/routes/routes";
+import { getStaffByIcNo, getStaffById, getStaffByName } from "../../../util/requests/staffRequest";
 
-type PatientResponse = {
-  patientId: number,
+type StaffResponse = {
+  staffId: number,
   name: string,
   icNo: string,
   gender: string,
   address: string,
   contactNo: string,
   registrationTime: string,
-  profileImage: string
+  profileImage: string,
+  position: string
 }
 
 const columns: readonly Column[] = [
@@ -40,17 +42,22 @@ const columns: readonly Column[] = [
     minWidth: 100,
   },
   {
+    id: 'position',
+    label: 'Position',
+    minWidth: 100,
+  },
+  {
     id: 'action',
     label: 'Action',
     minWidth: 100,
   },
 ];
 
-function SearchPatient(){
+function SearchStaff(){
   const [searchType, setSearchType] = useState<string>('');
   const [searchText, setSearchText] = useState<string>('');
-  const [patientList, setPatientList] = useState<PatientResponse[]>([]);
-  const {setPatientEditFormData, patientEditFormData} = useStore();
+  const [staffList, setStaffList] = useState<StaffResponse[]>([]);
+  const {setStaffEditFormData} = useStore();
   const navigate = useNavigate();
 
   const handleSearchByChange = (e: SelectChangeEvent) => {
@@ -64,32 +71,32 @@ function SearchPatient(){
   const handleSearchSubmit = async () => {
     let data;
     if(searchType === "name"){
-      const response = getPatientByName(searchText);
+      const response = getStaffByName(searchText);
       data = await response;
     }else if(searchType === "icNo"){
-      const response = getPatientByIcNo(searchText);
+      const response = getStaffByIcNo(searchText);
       data = await response;
     }else if(searchType === "id"){
-      const response = getPatientById(searchText);
+      const response = getStaffById(searchText);
       data = await response;
     }
-    setPatientList(data);
+    setStaffList(data);
   }
   
-  const handleEditPatient = (data) => {
-    setPatientEditFormData(data);
-    navigate(routes.editPatient);
+  const handleEditStaff = (data) => {
+    setStaffEditFormData(data);
+    navigate(routes.editStaff);
   }
   
   return (
     <section className={styles.mainCont}>
-      <h1>Search Patient</h1>
+      <h1>Search Staff</h1>
       <Grid2 container spacing={3}>
         <Grid2 size={2}>
           <SelectDropdown label={"Search by"} onChange={handleSearchByChange} value={searchType} isRequired={true}>
             <MenuItem value="name">Name</MenuItem>
             <MenuItem value="icNo">IC Number</MenuItem>
-            <MenuItem value="id">Patient ID</MenuItem>
+            <MenuItem value="id">Staff ID</MenuItem>
           </SelectDropdown>
         </Grid2>
         <Grid2 size={3}>
@@ -98,11 +105,11 @@ function SearchPatient(){
         <Grid2> 
           <Button variant="contained" size="large" onClick={handleSearchSubmit}>Search</Button>
         </Grid2>
-        <DataTable rows={patientList} action={handleEditPatient} columns={columns}/>
+        <DataTable rows={staffList} action={handleEditStaff} columns={columns}/>
       </Grid2>
 
     </section>
   )
 }
 
-export default SearchPatient;
+export default SearchStaff;
