@@ -12,7 +12,7 @@ import { formatDate } from '../../util/functions/date';
 import useStore from '../../util/store/store';
 
 export interface Column {
-  id: 'name' | 'icNo' | 'gender' | 'address' | 'contactNo' | 'action' | 'position' | 'date' | 'remark' | 'queueId' | 'startTime' | 'endTime' | 'appointmentId';
+  id: 'name' | 'icNo' | 'gender' | 'address' | 'contactNo' | 'action' | 'position' | 'date' | 'remark' | 'queueId' | 'startTime' | 'endTime' | 'appointmentId' | 'details';
   label: string;
   minWidth?: number;
   align?: 'right';

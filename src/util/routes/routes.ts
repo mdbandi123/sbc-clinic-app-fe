@@ -18,8 +18,9 @@ const appointmentRoutes = {
 };
 
 const visitationRoutes = {
-  appointmentReport: "/visitation/report/details",
-  addReport: "/visitation/report/add"
+  appointmentReport: "/visitation/report",
+  addReport: "/visitation/report/add",
+  searchReport: "/visitation/report/details"
 };
 
 export const routes = {
