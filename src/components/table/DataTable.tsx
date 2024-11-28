@@ -9,9 +9,10 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { Button } from '@mui/material';
 import { formatDate } from '../../util/functions/date';
+import useStore from '../../util/store/store';
 
 export interface Column {
-  id: 'name' | 'icNo' | 'gender' | 'address' | 'contactNo' | 'action' | 'position' | 'date' | 'remark';
+  id: 'name' | 'icNo' | 'gender' | 'address' | 'contactNo' | 'action' | 'position' | 'date' | 'remark' | 'queueId' | 'startTime' | 'endTime';
   label: string;
   minWidth?: number;
   align?: 'right';
@@ -20,7 +21,7 @@ export interface Column {
 
 const placeHolderFunc = (params) => {}
 
-function DataTable({rows, action, columns, isAppointmentTable = false, secondaryAction = placeHolderFunc}) {
+function DataTable({rows, action, columns, isAppointmentTable = false, isQueueTable = false, secondaryAction = placeHolderFunc}) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -53,6 +54,13 @@ function DataTable({rows, action, columns, isAppointmentTable = false, secondary
           <TableBody>
             {rows
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              // .filter((row, idx) => {
+              //   if(!isQueueTable){
+              //     return true;
+              //   }
+
+              //   return !row?.checkIn;
+              // })
               .map((row, idx) => {
                 if (row?.isArrival && row?.isConfirmed){
                   return;
@@ -78,18 +86,19 @@ function DataTable({rows, action, columns, isAppointmentTable = false, secondary
                             </TableCell>
                           )
                         }
-
                       }
 
                       if(column.id === 'action' && (row?.isArrival === undefined || row?.isConfirmed === undefined)){
                         return (
                           <TableCell key={idx}>
-                            <Button variant="contained" size="small" onClick={()=>action(row)}>Edit</Button>
+                            <Button variant="contained" size="small" onClick={()=>action(row)}>
+                              {isQueueTable ? 'Check In' : 'Edit'}
+                            </Button>
                           </TableCell>
                         )
                       }
 
-                      if(column.id === 'date'){
+                      if(column.id === 'date' || column.id === 'endTime' || column.id === 'startTime'){
                         return(
                         <TableCell key={idx}>
                           {formatDate(value)}

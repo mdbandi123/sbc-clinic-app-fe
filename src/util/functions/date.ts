@@ -1,5 +1,11 @@
 import dayjs from "dayjs"
 
 export const formatDate = (date) =>{
-  return dayjs(date).format('MMM D, YYYY h:mm A');
+  const formattedDate = dayjs(date).format('MMM D, YYYY h:mm A');
+
+  if (formattedDate === 'Invalid Date'){
+    return '';
+  }
+
+  return formattedDate;
 }

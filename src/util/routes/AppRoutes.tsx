@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router";
-import QueueDashboard from "../../pages/queue/QueueDashboard";
+import QueueDashboard from "../../pages/queue/QueueDashboard/QueueDashboard";
 import { routes } from "./routes";
 import AddPatientForm from "../../pages/patient/AddPatientForm/AddPatientForm";
 import SearchPatient from "../../pages/patient/SearchPatient/SearchPatient";
