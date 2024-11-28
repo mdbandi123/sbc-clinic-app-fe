@@ -9,6 +9,8 @@ import SearchStaff from "../../pages/staff/SearchStaff/SearchStaff";
 import EditStaffForm from "../../pages/staff/EditStaff/EditStaffForm";
 import AddAppointmentForm from "../../pages/appointment/AddAppointmentForm/AddAppointmentForm";
 import SearchAppointment from "../../pages/appointment/SearchAppointment/SearchAppointment";
+import AppointmentReport from "../../pages/visitation/AppointmentReport/AppointmentReport";
+import AddReportForm from "../../pages/visitation/AddReportForm/AddReportForm";
 
 function AppRoutes(){
   return(
@@ -23,6 +25,8 @@ function AppRoutes(){
       <Route path={routes.editStaff} element={<EditStaffForm/>}/>
       <Route path={routes.addAppointment} element={<AddAppointmentForm/>}/>
       <Route path={routes.searchAppointment} element={<SearchAppointment/>}/>
+      <Route path={routes.appointmentReport} element={<AppointmentReport/>}/>
+      <Route path={routes.addReport} element={<AddReportForm/>}/>
     </Routes>
   )
 }

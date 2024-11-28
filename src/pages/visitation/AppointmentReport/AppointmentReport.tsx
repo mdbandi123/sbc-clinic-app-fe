@@ -1,50 +1,22 @@
-import { Search } from "@mui/icons-material";
-import {
-  Button,
-  Grid2,
-  InputAdornment,
-  MenuItem,
-  SelectChangeEvent,
-  TextField,
-} from "@mui/material";
+import { Grid2, MenuItem, Button, SelectChangeEvent } from "@mui/material";
 import SearchField from "../../../components/input/SearchField";
 import SelectDropdown from "../../../components/input/SelectDropdown";
-import styles from "./SearchAppointment.module.css";
-import { useEffect, useState } from "react";
 import DataTable, { Column } from "../../../components/table/DataTable";
-import useStore from "../../../util/store/store";
+import styles from "./AppointmentReport.module.css"
+import { useEffect, useState } from "react";
+import { getAppointmentByName, getAppointmentByIcNo, getAppointmentById, getAllAppointments } from "../../../util/requests/appointmentRequest";
+import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import { routes } from "../../../util/routes/routes";
-import {
-  getStaffByIcNo,
-  getStaffById,
-  getStaffByName,
-  getAllStaff
-} from "../../../util/requests/staffRequest";
-import { useQuery } from "@tanstack/react-query";
-import { getAllAppointments, getAppointmentByIcNo, getAppointmentById, getAppointmentByName, updateAppointmentArrivalStatus, updateAppointmentConfirmationStatus } from "../../../util/requests/appointmentRequest";
-import dayjs from "dayjs";
-import { formatDate } from "../../../util/functions/date";
-
-type AppointmentResponse = {
-  appointmentId: number;
-  name: string;
-  icNo: string;
-  date: string;
-  remark: string;
-};
+import useStore from "../../../util/store/store";
 
 const columns: readonly Column[] = [
+  { id: "appointmentId", label: "Appointment ID", minWidth: 100 },
   { id: "name", label: "Name", minWidth: 100 },
   { id: "icNo", label: "IC No.", minWidth: 100 },
   {
     id: "date",
     label: "Date",
-    minWidth: 100,
-  },
-  {
-    id: "remark",
-    label: "Remark",
     minWidth: 100,
   },
   {
@@ -54,24 +26,25 @@ const columns: readonly Column[] = [
   },
 ];
 
-function SearchAppointment() {
+function AppointmentReport(){
   const [searchType, setSearchType] = useState<string>("");
   const [searchText, setSearchText] = useState<string>("");
-  const [isCompletedShown, setIsCompletedShown] = useState<boolean>(false);
+  const [appointmentList, setAppointmentList] = useState([]);
+  const navigate = useNavigate();
+  const {setReportCreateFormData} = useStore();
 
   const { data, isSuccess, isFetched } = useQuery({
     queryKey: ['appointment'],
     queryFn: getAllAppointments,
     placeholderData: [],
   });
-  const [appointmentList, setAppointmentList] = useState<AppointmentResponse[]>([]);
 
   useEffect(()=>{
     if(isFetched){
       setAppointmentList(data);
     }
   },[isFetched])
-
+  
   const handleSearchByChange = (e: SelectChangeEvent) => {
     setSearchType(e.target.value);
   };
@@ -79,10 +52,6 @@ function SearchAppointment() {
   const handleSearchTextChange = (e: SelectChangeEvent) => {
     setSearchText(e.target.value);
   };
-
-  const handleCompeletedShownChange = () => {
-    setIsCompletedShown((prev) => !prev);
-  }
 
   const handleSearchSubmit = async () => {
     let data;
@@ -99,21 +68,14 @@ function SearchAppointment() {
     setAppointmentList(data);
   };
 
-  const handleEditAppointmentArrivalStatus = async (payload) => {
-    const response = updateAppointmentArrivalStatus({params: payload.appointmentId, formState: {isArrival: true, fkPatientId: payload.patientId}});
-    const data = await response;
-    console.log(data);
-  };
-
-  const handleEditAppointmentConfirmationStatus = async (payload) => {
-    const response = updateAppointmentConfirmationStatus({params: payload.appointmentId, formState: {isConfirmed: true}});
-    const data = await response;
-    console.log(data);
-  };
-
-  return (
+  const handleCreateReport = (payload) => {
+    setReportCreateFormData(payload);
+    navigate(routes.addReport);
+  }
+  
+  return(
     <section className={styles.mainCont}>
-      <h1>Search Appointment</h1>
+      <h1>Create Report</h1>
       <Grid2 container spacing={3}>
         <Grid2 size={2}>
           <SelectDropdown
@@ -135,22 +97,15 @@ function SearchAppointment() {
             Search
           </Button>
         </Grid2>
-        <Grid2>
-          <Button variant="contained" size="large" onClick={handleCompeletedShownChange}>
-            Show Completed
-          </Button>
-        </Grid2>
           <DataTable
             rows={appointmentList}
-            action={handleEditAppointmentArrivalStatus}
-            secondaryAction={handleEditAppointmentConfirmationStatus}
+            action={handleCreateReport}
             columns={columns}
-            isAppointmentTable={true}
-            isCompletedShown={isCompletedShown}
+            isVisitationTable = {true}
           />
       </Grid2>
     </section>
-  );
+  )
 }
 
-export default SearchAppointment;
+export default AppointmentReport;

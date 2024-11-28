@@ -12,7 +12,7 @@ import { formatDate } from '../../util/functions/date';
 import useStore from '../../util/store/store';
 
 export interface Column {
-  id: 'name' | 'icNo' | 'gender' | 'address' | 'contactNo' | 'action' | 'position' | 'date' | 'remark' | 'queueId' | 'startTime' | 'endTime';
+  id: 'name' | 'icNo' | 'gender' | 'address' | 'contactNo' | 'action' | 'position' | 'date' | 'remark' | 'queueId' | 'startTime' | 'endTime' | 'appointmentId';
   label: string;
   minWidth?: number;
   align?: 'right';
@@ -21,7 +21,7 @@ export interface Column {
 
 const placeHolderFunc = (params) => {}
 
-function DataTable({rows, action, columns, isAppointmentTable = false, isQueueTable = false, secondaryAction = placeHolderFunc}) {
+function DataTable({rows, action, columns, isAppointmentTable = false, isQueueTable = false, isVisitationTable = false, secondaryAction = placeHolderFunc, isCompletedShown = false}) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -54,41 +54,63 @@ function DataTable({rows, action, columns, isAppointmentTable = false, isQueueTa
           <TableBody>
             {rows
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              // .filter((row, idx) => {
-              //   if(!isQueueTable){
-              //     return true;
-              //   }
-
-              //   return !row?.checkIn;
-              // })
               .map((row, idx) => {
-                if (row?.isArrival && row?.isConfirmed){
+
+                if (row?.isArrival && row?.isConfirmed && !isCompletedShown && !isVisitationTable ){
                   return;
                 }
 
+                if (isVisitationTable && row?.reportId){
+                  return;
+                }
+
+                if(isVisitationTable && !(row?.isArrival&& row?.isConfirmed)){
+                  return;
+                }
                 console.log(row)
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={idx}>
                     {columns.map((column, idx) => {
                       const value = row[column.id];
                       
-                      if(column.id === 'action'  && !(row?.isArrival === undefined || row?.isConfirmed === undefined)){
-                        if(!row?.isArrival && !row?.isConfirmed){
+                      if(isAppointmentTable){
+                        if(column.id === 'action'){
+                          if(!row?.isArrival && !row?.isConfirmed){
+                            return (
+                              <TableCell key={idx}>
+                                <Button variant="contained" size="small" onClick={()=>secondaryAction(row)}>Confirm</Button>
+                              </TableCell>
+                            )
+                          }else if(!row?.isArrival && row?.isConfirmed){
+                            return (
+                              <TableCell key={idx}>
+                                <Button variant="contained" size="small" onClick={()=>action(row)}>Check In</Button>
+                              </TableCell>
+                            )
+                          } else {
+                            return (
+                              <TableCell key={idx}>
+                                <Button variant="contained" size="small" disabled onClick={()=>action(row)}>Completed</Button>
+                              </TableCell>
+                            )
+                          }
+                        }
+                      }
+
+                      if(isVisitationTable){
+                        if(column.id === 'action'){
                           return (
-                            <TableCell key={idx}>
-                              <Button variant="contained" size="small" onClick={()=>secondaryAction(row)}>Confirm</Button>
-                            </TableCell>
-                          )
-                        }else if(!row?.isArrival && row?.isConfirmed){
-                          return (
-                            <TableCell key={idx}>
-                              <Button variant="contained" size="small" onClick={()=>action(row)}>Check In</Button>
-                            </TableCell>
+                              <TableCell key={idx}>
+                                <Button variant="contained" size="small" onClick={() => action(row)}>
+                                  Create Report
+                                </Button>
+                              </TableCell>
                           )
                         }
                       }
 
-                      if(column.id === 'action' && (row?.isArrival === undefined || row?.isConfirmed === undefined)){
+
+                      if(column.id === 'action'){
                         return (
                           <TableCell key={idx}>
                             <Button variant="contained" size="small" onClick={()=>action(row)}>
