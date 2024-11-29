@@ -9,7 +9,6 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { Button } from "@mui/material";
 import { formatDate } from "../../util/functions/date";
-import useStore from "../../util/store/store";
 
 export interface Column {
   id:
@@ -33,7 +32,16 @@ export interface Column {
   format?: (value: number) => string;
 }
 
-const placeHolderFunc = (params) => {};
+type DataTableProps = {
+  rows: Record<string, string>[],
+  action: (e: Record<string, string>) => void,
+  columns: readonly Column[],
+  isAppointmentTable?: boolean,
+  isQueueTable?: boolean,
+  isVisitationTable?: boolean,
+  secondaryAction?: (e: Record<string, string>) => void,
+  isCompletedShown?: false
+}
 
 function DataTable({
   rows,
@@ -42,9 +50,9 @@ function DataTable({
   isAppointmentTable = false,
   isQueueTable = false,
   isVisitationTable = false,
-  secondaryAction = placeHolderFunc,
+  secondaryAction = () => {},
   isCompletedShown = false,
-}) {
+}: DataTableProps) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 

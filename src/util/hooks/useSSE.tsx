@@ -1,18 +1,23 @@
 import { useState, useEffect } from "react";
 
+const sseEventNames = {
+  queueCheckin: "queueCheckin",
+};
+
 const useSSE = (url: string) => {
-  const [trigger, setTrigger] = useState<boolean>(false);
+  const [queueTrigger, setQueueTrigger] = useState<boolean>(false);
+
   const [isFirstConnection, setIsFirstConnection] = useState<boolean>(true);
 
   useEffect(() => {
     const eventSource = new EventSource(url);
 
-    eventSource.onmessage = () => {
-      console.log("triggered");
-      setTrigger((prev) => !prev);
-    };
+    eventSource.addEventListener(sseEventNames.queueCheckin, () => {
+      console.log("firing queueCheckin");
+      setQueueTrigger((prev) => !prev);
+    });
 
-    eventSource.onerror = (error) => {
+    eventSource.onerror = (error: Event) => {
       if (isFirstConnection) {
         setIsFirstConnection(false);
         return;
@@ -26,7 +31,7 @@ const useSSE = (url: string) => {
     };
   }, [url]);
 
-  return trigger;
+  return { queueTrigger };
 };
 
 export default useSSE;

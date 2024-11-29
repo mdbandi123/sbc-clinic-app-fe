@@ -1,7 +1,12 @@
 import { Search } from "@mui/icons-material";
 import { TextField, InputAdornment } from "@mui/material";
+import { ChangeEventHandler } from "react";
 
-function SearchField({ onChange, value }) {
+type SearchFieldProps = {
+  onChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>,
+  value: string
+}
+function SearchField({ onChange, value }: SearchFieldProps) {
   return (
     <>
       <TextField

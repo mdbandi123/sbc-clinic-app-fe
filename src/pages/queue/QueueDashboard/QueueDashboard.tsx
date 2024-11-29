@@ -3,12 +3,13 @@ import styles from "./QueueDashboard.module.css";
 import DataTable, { Column } from "../../../components/table/DataTable";
 import { useQuery } from "@tanstack/react-query";
 import {
-  getQueueOfPatients,
   getQueueOfPatientsNotCheckedIn,
   updateCheckIn,
 } from "../../../util/requests/queueRequest";
 import { useEffect, useMemo, useState } from "react";
 import useStore from "../../../util/store/store";
+import useSSE from "../../../util/hooks/useSSE";
+import { BASE_URL } from "../../../util/routes/routes";
 
 const columns: readonly Column[] = [
   {
@@ -28,12 +29,7 @@ const columns: readonly Column[] = [
   },
   {
     id: "startTime",
-    label: "Start Time",
-    minWidth: 100,
-  },
-  {
-    id: "endTime",
-    label: "End Time",
+    label: "Joined Queue",
     minWidth: 100,
   },
   {
@@ -44,8 +40,9 @@ const columns: readonly Column[] = [
 ];
 
 function QueueDashboard() {
-  const [currServing, setCurrServing] = useState<number>();
-  const { data } = useQuery({
+  const {queueTrigger} = useSSE(`${BASE_URL}/api/sse/subscribe`);
+  const { setToolbarTitle } = useStore();
+  const { data, refetch } = useQuery({
     queryKey: ["queue"],
     queryFn: getQueueOfPatientsNotCheckedIn,
     initialData: [],
@@ -60,26 +57,32 @@ function QueueDashboard() {
       params: payload.queueId,
       formState: { checkIn: true },
     });
-    const data = await response.data;
   };
+
+  useEffect(()=>{
+    setToolbarTitle('Home')
+  },[]);
+
+  useEffect(()=>{
+    refetch();
+  }, [queueTrigger])
 
   return (
     <section className={styles.mainCont}>
-      <h1>Dashboard</h1>
       <Grid2 container>
         <Grid2 size={12}>
           <h2 className={styles.nowServingHeader}>Now Serving:</h2>
           <p className={styles.nowServingNum}>{queueCurrServing}</p>
         </Grid2>
-        <Grid2 size={12}>
-          <DataTable
-            rows={data}
-            action={handleCheckIn}
-            columns={columns}
-            isQueueTable={true}
-          />
-        </Grid2>
       </Grid2>
+      <div>
+        <DataTable
+          rows={data}
+          action={handleCheckIn}
+          columns={columns}
+          isQueueTable={true}
+        />
+      </div>
     </section>
   );
 }

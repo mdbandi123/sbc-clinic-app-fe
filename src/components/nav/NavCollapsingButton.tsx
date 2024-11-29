@@ -1,5 +1,5 @@
 import { ReactNode, useState } from "react";
-import { ExpandLess, ExpandMore, StarBorder } from "@mui/icons-material";
+import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import {
   List,
   ListItemButton,

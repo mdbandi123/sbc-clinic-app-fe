@@ -1,29 +1,16 @@
-import { ReactNode, useState } from "react";
+import { ReactNode } from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import CssBaseline from "@mui/material/CssBaseline";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
-import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-import ExpandLess from "@mui/icons-material/ExpandLess";
-import ExpandMore from "@mui/icons-material/ExpandMore";
-import Collapse from "@mui/material/Collapse/Collapse";
-import StarBorder from "@mui/icons-material/StarBorder";
 import NavButton from "./NavButton";
 import {
   Accessible,
-  Add,
   AddBox,
   CalendarMonth,
-  Edit,
   FormatListBulleted,
   Home,
   MedicalInformation,
@@ -35,6 +22,8 @@ import {
 import { routes } from "../../util/routes/routes";
 import NavCollapsingButton from "./NavCollapsingButton";
 import SBClinicLogo from "../../assets/SB-Clinic.png";
+import { Typography } from "@mui/material";
+import useStore from "../../util/store/store";
 
 const drawerWidth = 240;
 
@@ -43,6 +32,7 @@ type NavDrawerProps = {
 };
 
 export default function NavDrawer({ children }: NavDrawerProps) {
+  const { toolbarTitle } = useStore();
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -50,9 +40,9 @@ export default function NavDrawer({ children }: NavDrawerProps) {
         position="fixed"
         sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
       >
-        <Toolbar>
-          <Typography variant="h6" noWrap component="div">
-            SBC Clinic App
+        <Toolbar sx={{ backgroundColor: "#016bad" }}>
+          <Typography variant="h6" noWrap component="div" style={{color: '#FFF', fontWeight: 700}}>
+            {toolbarTitle}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -144,10 +134,7 @@ export default function NavDrawer({ children }: NavDrawerProps) {
           </NavCollapsingButton>
         </List>
       </Drawer>
-      <Box
-        component="main"
-        sx={{ flexGrow: 1, bgcolor: "background.default", p: 3 }}
-      >
+      <Box component="main" sx={{ flexGrow: 1, bgcolor: "background.default", p:3 }}>
         <Toolbar />
         {children}
       </Box>

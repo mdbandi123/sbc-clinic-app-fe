@@ -3,9 +3,8 @@ import {
   FormControl,
   InputLabel,
   Select,
-  MenuItem,
 } from "@mui/material";
-import React, { ReactNode, useState } from "react";
+import { ReactNode } from "react";
 
 type SelectDropdownProps = {
   label: string;

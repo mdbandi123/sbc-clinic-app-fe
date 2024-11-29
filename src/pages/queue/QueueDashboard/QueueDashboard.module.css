@@ -1,15 +1,27 @@
 .mainCont {
-  padding: 2em;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 
-.button {
-  margin-top: 10%;
+.headerText {
+  margin: 0;
 }
 
 .nowServingNum {
   text-align: center;
+  font-size: 6em;
+  font-weight: 600;
+  margin: 0;
 }
 
 .nowServingHeader {
   text-align: center;
+  font-size: 3em;
+  margin: 0;
+}
+
+.dataTable {
+
 }
