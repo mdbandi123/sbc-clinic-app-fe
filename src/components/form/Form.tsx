@@ -12,7 +12,7 @@ type FormProps = {
   state: Record<string, string>;
   handleDispatch: (action: DispatchParams) => void;
   formType?: "patient" | "staff" | "appointment" | "report" | "medcert";
-  staffChoices: string[];
+  staffChoices?: string[];
 };
 
 function Form({
