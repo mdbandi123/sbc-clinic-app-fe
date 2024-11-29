@@ -36,7 +36,7 @@ function SearchReport(){
   const {setReportCreateFormData} = useStore();
 
   const { data, isSuccess, isFetched } = useQuery({
-    queryKey: ['appointment'],
+    queryKey: ['report'],
     queryFn: getAllReports,
     placeholderData: [],
   });
@@ -75,7 +75,6 @@ function SearchReport(){
     navigate(routes.addReport);
   }
 
-  console.log(data);
   
   return(
     <section className={styles.mainCont}>

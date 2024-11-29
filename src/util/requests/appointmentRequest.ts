@@ -16,7 +16,6 @@ export const getAllAppointments = async () => {
 }
 
 export const getAppointmentById = async (params) => {
-  console.log(`${BASE_URL}/api/appointment/details/id/${params}`);
   const response = await axios.get(`${BASE_URL}/api/appointment/details/id/${params}`);
   return response.data;
 }

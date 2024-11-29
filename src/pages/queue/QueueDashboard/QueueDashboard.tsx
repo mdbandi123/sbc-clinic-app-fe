@@ -54,7 +54,6 @@ function QueueDashboard(){
   const handleCheckIn = async(payload) => {
     const response = await updateCheckIn({params: payload.queueId, formState: {checkIn: true}});
     const data = await response.data;
-    console.log(data);
   }
 
   return(

@@ -36,8 +36,7 @@ function AddReportForm() {
     staff: ''
   });
   
-  console.log(data);
-  console.log(reportCreateFormData);
+
 
   const handleSubmit = () => {
     const payload = {details: state.details, fkStaffId: parseInt(state.staff)};

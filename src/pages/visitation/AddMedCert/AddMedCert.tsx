@@ -66,14 +66,12 @@ function AddMedCert(){
       startDate: state.date,
       day: state.day
     }
-    mutation.mutate(payload);
-    console.log(payload);
+    // mutation.mutate(payload);
   }
 
   const handleSearchSubmit = async () => {
       const response = getPatientByName(searchText.trim());
       const data = await response;
-      console.log(data[0]);
       setPatientDetails(data[0]);
   }
 

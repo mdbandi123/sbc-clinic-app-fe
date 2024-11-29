@@ -21,7 +21,7 @@ import NavButton from './NavButton';
 import { Accessible, Add, AddBox, CalendarMonth, Edit, FormatListBulleted, Home, MedicalInformation, PersonAdd, PersonSearch, Search, SupervisorAccount } from '@mui/icons-material';
 import { routes } from '../../util/routes/routes';
 import NavCollapsingButton from './NavCollapsingButton';
-import SbcLogo from "../../assets/sbclogo.jpg";
+import SBClinicLogo from "../../assets/SB-Clinic.png";
 
 const drawerWidth = 240;
 
@@ -56,7 +56,7 @@ export default function NavDrawer({children}: NavDrawerProps) {
         anchor="left"
       >
         <Toolbar>
-          <img src={SbcLogo} alt="logo" style={{width:'100%'}}/>
+          <img src={SBClinicLogo} alt="logo" style={{width:'100%'}}/>
         </Toolbar>
         <Divider />
         <List>

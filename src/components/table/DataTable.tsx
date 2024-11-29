@@ -67,7 +67,6 @@ function DataTable({rows, action, columns, isAppointmentTable = false, isQueueTa
                 if(isVisitationTable && !(row?.isArrival&& row?.isConfirmed)){
                   return;
                 }
-                console.log(row)
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={idx}>
                     {columns.map((column, idx) => {

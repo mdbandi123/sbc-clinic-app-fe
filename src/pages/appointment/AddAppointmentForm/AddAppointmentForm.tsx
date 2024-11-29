@@ -61,7 +61,6 @@ function AddAppointmentForm(){
       fkPatientId: patientDetails?.patientId,
     }
     mutation.mutate(payload);
-    console.log(state);
   }
 
   const handleSearchSubmit = async () => {

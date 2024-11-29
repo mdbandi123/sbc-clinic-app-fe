@@ -102,13 +102,11 @@ function SearchAppointment() {
   const handleEditAppointmentArrivalStatus = async (payload) => {
     const response = updateAppointmentArrivalStatus({params: payload.appointmentId, formState: {isArrival: true, fkPatientId: payload.patientId}});
     const data = await response;
-    console.log(data);
   };
 
   const handleEditAppointmentConfirmationStatus = async (payload) => {
     const response = updateAppointmentConfirmationStatus({params: payload.appointmentId, formState: {isConfirmed: true}});
     const data = await response;
-    console.log(data);
   };
 
   return (
