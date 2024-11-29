@@ -3,10 +3,11 @@ import Form from "../../../components/form/Form";
 import styles from "./AddPatientForm.module.css";
 import { Button, Typography } from "@mui/material";
 import { insertPatient } from "../../../util/requests/patientRequest";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useStore from "../../../util/store/store";
 import { useNavigate } from "react-router";
 import Toast from "../../../components/feedback/Toast";
+import { routes } from "../../../util/routes/routes";
 
 type PatientReducerState = {
   name: string;
@@ -34,7 +35,9 @@ const initialState: PatientReducerState = {
 function AddPatientForm() {
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
-  const { setToolbarTitle } = useStore();
+  const queryClient = useQueryClient();
+  const { setToolbarTitle } =
+    useStore();
   const [state, dispatch] = useReducer<
     Reducer<PatientReducerState, ActionType>
   >((state, action) => {
@@ -50,7 +53,7 @@ function AddPatientForm() {
       return { ...state, contactNo: action.payload };
     } else if (action.type === "email") {
       return { ...state, email: action.payload };
-    } else if (action.type === "reset"){
+    } else if (action.type === "reset") {
       return initialState;
     }
   }, initialState);
@@ -75,13 +78,14 @@ function AddPatientForm() {
   };
 
   const resetInputFields = () => {
-    dispatch({type: 'reset', payload: null})
+    dispatch({ type: "reset", payload: null });
   };
 
   const handleFormSubmit = () => {
+    console.log(state);
     mutation.mutate(state);
   };
-
+  
   const handleSuccessToastClose = () => {
     setIsSuccess(false);
   }
@@ -92,11 +96,11 @@ function AddPatientForm() {
 
   const handleErrorToastClose = () => {
     setIsError(false);
-  }
+  };
 
   const handleErrorToastOpen = () => {
     setIsError(true);
-  }
+  };
 
   return (
     <section className={styles.mainCont}>

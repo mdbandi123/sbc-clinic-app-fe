@@ -72,7 +72,7 @@ function SearchAppointment() {
     placeholderData: [],
   });
   const [appointmentList, setAppointmentList] = useState<AppointmentResponse[]>(
-    [],
+    []
   );
 
   useEffect(() => {
@@ -119,7 +119,13 @@ function SearchAppointment() {
   const handleEditAppointmentConfirmationStatus = async (payload) => {
     const response = updateAppointmentConfirmationStatus({
       params: payload.appointmentId,
-      formState: { isConfirmed: true },
+      formState: {
+        isConfirmed: true,
+        fkPatientId: payload.patientId,
+        date: payload.date,
+        remark: payload.remark,
+        appointmentId: payload.appointmentId,
+      },
     });
     const data = await response;
   };

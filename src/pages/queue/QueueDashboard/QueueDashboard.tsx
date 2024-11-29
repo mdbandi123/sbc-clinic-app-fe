@@ -6,7 +6,7 @@ import {
   getQueueOfPatientsNotCheckedIn,
   updateCheckIn,
 } from "../../../util/requests/queueRequest";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import useStore from "../../../util/store/store";
 import useSSE from "../../../util/hooks/useSSE";
 import { BASE_URL } from "../../../util/routes/routes";

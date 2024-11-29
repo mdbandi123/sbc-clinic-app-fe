@@ -6,14 +6,12 @@ const sseEventNames = {
 
 const useSSE = (url: string) => {
   const [queueTrigger, setQueueTrigger] = useState<boolean>(false);
-
   const [isFirstConnection, setIsFirstConnection] = useState<boolean>(true);
 
   useEffect(() => {
     const eventSource = new EventSource(url);
 
     eventSource.addEventListener(sseEventNames.queueCheckin, () => {
-      console.log("firing queueCheckin");
       setQueueTrigger((prev) => !prev);
     });
 

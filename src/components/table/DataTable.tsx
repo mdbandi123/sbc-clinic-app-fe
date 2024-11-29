@@ -25,7 +25,8 @@ export interface Column {
     | "startTime"
     | "endTime"
     | "appointmentId"
-    | "details";
+    | "details"
+    | "email";
   label: string;
   minWidth?: number;
   align?: "right";
@@ -33,8 +34,8 @@ export interface Column {
 }
 
 type DataTableProps = {
-  rows: Record<string, string>[],
-  action: (e: Record<string, string>) => void,
+  rows: Record<string, string | number>[],
+  action: (e: Record<string, string | number>) => void,
   columns: readonly Column[],
   isAppointmentTable?: boolean,
   isQueueTable?: boolean,

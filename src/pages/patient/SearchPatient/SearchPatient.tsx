@@ -1,27 +1,21 @@
-import { Search } from "@mui/icons-material";
-import {
-  Button,
-  Grid2,
-  InputAdornment,
-  MenuItem,
-  SelectChangeEvent,
-  TextField,
-} from "@mui/material";
+import { Button, Grid2, MenuItem, SelectChangeEvent } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
+import { ChangeEventHandler, useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import SearchField from "../../../components/input/SearchField";
 import SelectDropdown from "../../../components/input/SelectDropdown";
-import styles from "./SearchPatient.module.css";
-import { useEffect, useState } from "react";
+import DataTable, { Column } from "../../../components/table/DataTable";
+import useSSE from "../../../util/hooks/useSSE";
 import {
   getAllPatients,
   getPatientByIcNo,
   getPatientById,
   getPatientByName,
 } from "../../../util/requests/patientRequest";
-import DataTable, { Column } from "../../../components/table/DataTable";
+import { BASE_URL, routes } from "../../../util/routes/routes";
 import useStore from "../../../util/store/store";
-import { useNavigate } from "react-router";
-import { routes } from "../../../util/routes/routes";
-import { useQuery } from "@tanstack/react-query";
+import styles from "./SearchPatient.module.css";
+import Toast from "../../../components/feedback/Toast";
 
 type PatientResponse = {
   patientId: number;
@@ -31,7 +25,7 @@ type PatientResponse = {
   address: string;
   contactNo: string;
   registrationTime: string;
-  profileImage: string;
+  email: string;
 };
 
 const columns: readonly Column[] = [
@@ -67,25 +61,39 @@ const columns: readonly Column[] = [
 function SearchPatient() {
   const [searchType, setSearchType] = useState<string>("");
   const [searchText, setSearchText] = useState<string>("");
-  const { setPatientEditFormData, patientEditFormData } = useStore();
+  const [resetSearchToggle, setResetSearchToggle] = useState<boolean>(false);
+  const {
+    setPatientEditFormData,
+    setToolbarTitle,
+    patientTrigger,
+    isSuccessfulPatientEdit,
+    setIsSuccessfulPatientEdit,
+    isSuccessfulPatientAdd,
+    setIsSuccessfulPatientAdd,
+  } = useStore();
   const navigate = useNavigate();
   const { data, isFetched } = useQuery({
-    queryKey: ["patient"],
+    queryKey: ["patient", patientTrigger],
     queryFn: getAllPatients,
+    initialData: [],
   });
   const [patientList, setPatientList] = useState<PatientResponse[]>([]);
 
   useEffect(() => {
-    if (isFetched) {
-      setPatientList(data);
-    }
-  }, [isFetched]);
+    setPatientList(data);
+  }, [isFetched, resetSearchToggle]);
+
+  useEffect(() => {
+    setToolbarTitle("Search Patient");
+  }, []);
 
   const handleSearchByChange = (e: SelectChangeEvent) => {
     setSearchType(e.target.value);
   };
 
-  const handleSearchTextChange = (e: SelectChangeEvent) => {
+  const handleSearchTextChange: ChangeEventHandler<
+    HTMLInputElement | HTMLTextAreaElement
+  > = (e) => {
     setSearchText(e.target.value);
   };
 
@@ -104,14 +112,21 @@ function SearchPatient() {
     setPatientList(data);
   };
 
-  const handleEditPatient = (data) => {
+  const handleEditPatient = (data: PatientResponse) => {
     setPatientEditFormData(data);
     navigate(routes.editPatient);
   };
 
+  const handleResetToggle = () => {
+    setResetSearchToggle((prev) => !prev);
+  };
+
+  const handleEditSuccessToastClose = () => {
+    setIsSuccessfulPatientEdit(false);
+  };
+
   return (
     <section className={styles.mainCont}>
-      <h1>Search Patient</h1>
       <Grid2 container spacing={3}>
         <Grid2 size={2}>
           <SelectDropdown
@@ -133,12 +148,22 @@ function SearchPatient() {
             Search
           </Button>
         </Grid2>
+        <Grid2>
+          <Button variant="contained" size="large" onClick={handleResetToggle}>
+            Reset
+          </Button>
+        </Grid2>
         <DataTable
           rows={patientList}
           action={handleEditPatient}
           columns={columns}
         />
       </Grid2>
+      <Toast
+        isOpen={isSuccessfulPatientEdit}
+        message={"Patient details successfully changed!"}
+        onClose={handleEditSuccessToastClose}
+      />
     </section>
   );
 }

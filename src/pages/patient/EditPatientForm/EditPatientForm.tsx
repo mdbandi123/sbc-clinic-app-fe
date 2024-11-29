@@ -1,4 +1,4 @@
-import { useReducer } from "react";
+import { Reducer, useEffect, useReducer, useState } from "react";
 import Form from "../../../components/form/Form";
 import styles from "./EditPatientForm.module.css";
 import { Button } from "@mui/material";
@@ -8,6 +8,9 @@ import {
 } from "../../../util/requests/patientRequest";
 import { useMutation } from "@tanstack/react-query";
 import useStore from "../../../util/store/store";
+import Toast from "../../../components/feedback/Toast";
+import { useNavigate } from "react-router";
+import { routes } from "../../../util/routes/routes";
 
 type PatientReducerState = {
   name: string;
@@ -23,34 +26,58 @@ type ActionType = {
   payload: string;
 };
 
+const initialState: PatientReducerState = {
+  name: "",
+  icNo: "",
+  gender: "",
+  address: "",
+  contactNo: "",
+  email: "",
+};
+
 function EditPatientForm() {
-  const { patientEditFormData } = useStore();
-  const [state, dispatch] = useReducer(
-    (state: PatientReducerState, action: ActionType) => {
-      if (action.type === "name") {
-        return { ...state, name: action.payload };
-      } else if (action.type === "icNo") {
-        return { ...state, icNo: action.payload };
-      } else if (action.type === "gender") {
-        return { ...state, gender: action.payload };
-      } else if (action.type === "address") {
-        return { ...state, address: action.payload };
-      } else if (action.type === "contactNo") {
-        return { ...state, contactNo: action.payload };
-      } else if (action.type === "email") {
-        return { ...state, email: action.payload };
-      }
-    },
+  const [isError, setIsError] = useState<boolean>(false);
+  const navigate = useNavigate();
+  const {
     patientEditFormData,
-  );
+    setToolbarTitle,
+    togglePatientTrigger,
+    setIsSuccessfulPatientEdit,
+  } = useStore();
+  const [state, dispatch] = useReducer<
+    Reducer<PatientReducerState, ActionType>
+  >((state, action) => {
+    if (action.type === "name") {
+      return { ...state, name: action.payload };
+    } else if (action.type === "icNo") {
+      return { ...state, icNo: action.payload };
+    } else if (action.type === "gender") {
+      return { ...state, gender: action.payload };
+    } else if (action.type === "address") {
+      return { ...state, address: action.payload };
+    } else if (action.type === "contactNo") {
+      return { ...state, contactNo: action.payload };
+    } else if (action.type === "email") {
+      return { ...state, email: action.payload };
+    } else if (action.type === "reset") {
+      return initialState;
+    }
+  }, patientEditFormData);
+
+  useEffect(() => {
+    setToolbarTitle("Edit Patient");
+  }, []);
 
   const mutation = useMutation({
     mutationFn: updatePatient,
     onSuccess: (data) => {
-      console.log("patient edited:", data);
+      togglePatientTrigger();
+      resetInputFields();
+      setIsSuccessfulPatientEdit(true);
+      navigate(routes.searchPatient);
     },
     onError: (error) => {
-      console.error("Error editing patient:", error);
+      handleErrorToastOpen();
     },
   });
 
@@ -67,15 +94,39 @@ function EditPatientForm() {
     mutation.mutate(payload);
   };
 
+  const handleErrorToastClose = () => {
+    setIsError(false);
+  };
+
+  const handleErrorToastOpen = () => {
+    setIsError(true);
+  };
+
+  const resetInputFields = () => {
+    dispatch({ type: "reset", payload: null });
+  };
+
   return (
     <section className={styles.mainCont}>
-      <h1>Edit Patient</h1>
-      <Form handleDispatch={handleDispatch} state={state} formType="patient" />
+      <div>
+        <h1>Patient Details:</h1>
+        <Form
+          handleDispatch={handleDispatch}
+          state={state}
+          formType="patient"
+        />
+      </div>
       <div className={styles.button}>
         <Button variant="contained" size="large" onClick={handleFormSubmit}>
           Edit Patient
         </Button>
       </div>
+      <Toast
+        isOpen={isError}
+        message={"Error encountered"}
+        onClose={handleErrorToastClose}
+        isError
+      />
     </section>
   );
 }

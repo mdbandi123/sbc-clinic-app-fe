@@ -3,7 +3,7 @@ export const BASE_URL = "http://localhost:8080";
 const patientRoutes = {
   addPatient: "/patient/add",
   searchPatient: "/patient/details",
-  editPatient: "/patiend/details/edit",
+  editPatient: "/patient/details/edit",
 };
 
 const staffRoutes = {
