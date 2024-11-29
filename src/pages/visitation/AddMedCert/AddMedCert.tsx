@@ -60,10 +60,8 @@ function AddMedCert() {
   const mutation = useMutation({
     mutationFn: insertMedCert,
     onSuccess: (data) => {
-      console.log("patient created:", data);
     },
     onError: (error) => {
-      console.error("Error creating patient:", error);
     },
   });
 
@@ -82,7 +80,7 @@ function AddMedCert() {
       startDate: state.date,
       day: state.day,
     };
-    // mutation.mutate(payload);
+    mutation.mutate(payload);
   };
 
   const handleSearchSubmit = async () => {

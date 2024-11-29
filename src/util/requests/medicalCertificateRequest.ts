@@ -6,10 +6,22 @@ export const insertMedCert = async (formState) => {
     `${BASE_URL}/api/medical-certificate/insert`,
     formState,
     {
+      responseType: 'blob',
       headers: {
         "Content-Type": "application/json",
       },
     },
   );
-  return response.data;
+
+  const blob = new Blob([response.data], { type: 'application/pdf' });
+
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = 'MedicalCertificate.pdf'; 
+
+  document.body.appendChild(link);
+  
+  link.click();
+
+  document.body.removeChild(link);
 };
