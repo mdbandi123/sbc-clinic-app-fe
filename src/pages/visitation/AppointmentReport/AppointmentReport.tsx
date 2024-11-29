@@ -2,9 +2,14 @@ import { Grid2, MenuItem, Button, SelectChangeEvent } from "@mui/material";
 import SearchField from "../../../components/input/SearchField";
 import SelectDropdown from "../../../components/input/SelectDropdown";
 import DataTable, { Column } from "../../../components/table/DataTable";
-import styles from "./AppointmentReport.module.css"
+import styles from "./AppointmentReport.module.css";
 import { useEffect, useState } from "react";
-import { getAppointmentByName, getAppointmentByIcNo, getAppointmentById, getAllAppointments } from "../../../util/requests/appointmentRequest";
+import {
+  getAppointmentByName,
+  getAppointmentByIcNo,
+  getAppointmentById,
+  getAllAppointments,
+} from "../../../util/requests/appointmentRequest";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import { routes } from "../../../util/routes/routes";
@@ -26,25 +31,25 @@ const columns: readonly Column[] = [
   },
 ];
 
-function AppointmentReport(){
+function AppointmentReport() {
   const [searchType, setSearchType] = useState<string>("");
   const [searchText, setSearchText] = useState<string>("");
   const [appointmentList, setAppointmentList] = useState([]);
   const navigate = useNavigate();
-  const {setReportCreateFormData} = useStore();
+  const { setReportCreateFormData } = useStore();
 
   const { data, isSuccess, isFetched } = useQuery({
-    queryKey: ['appointment'],
+    queryKey: ["appointment"],
     queryFn: getAllAppointments,
     placeholderData: [],
   });
 
-  useEffect(()=>{
-    if(isFetched){
+  useEffect(() => {
+    if (isFetched) {
       setAppointmentList(data);
     }
-  },[isFetched])
-  
+  }, [isFetched]);
+
   const handleSearchByChange = (e: SelectChangeEvent) => {
     setSearchType(e.target.value);
   };
@@ -71,9 +76,9 @@ function AppointmentReport(){
   const handleCreateReport = (payload) => {
     setReportCreateFormData(payload);
     navigate(routes.addReport);
-  }
-  
-  return(
+  };
+
+  return (
     <section className={styles.mainCont}>
       <h1>Create Report</h1>
       <Grid2 container spacing={3}>
@@ -97,15 +102,15 @@ function AppointmentReport(){
             Search
           </Button>
         </Grid2>
-          <DataTable
-            rows={appointmentList}
-            action={handleCreateReport}
-            columns={columns}
-            isVisitationTable = {true}
-          />
+        <DataTable
+          rows={appointmentList}
+          action={handleCreateReport}
+          columns={columns}
+          isVisitationTable={true}
+        />
       </Grid2>
     </section>
-  )
+  );
 }
 
 export default AppointmentReport;

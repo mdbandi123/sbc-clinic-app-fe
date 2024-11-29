@@ -19,10 +19,17 @@ import {
   getStaffByIcNo,
   getStaffById,
   getStaffByName,
-  getAllStaff
+  getAllStaff,
 } from "../../../util/requests/staffRequest";
 import { useQuery } from "@tanstack/react-query";
-import { getAllAppointments, getAppointmentByIcNo, getAppointmentById, getAppointmentByName, updateAppointmentArrivalStatus, updateAppointmentConfirmationStatus } from "../../../util/requests/appointmentRequest";
+import {
+  getAllAppointments,
+  getAppointmentByIcNo,
+  getAppointmentById,
+  getAppointmentByName,
+  updateAppointmentArrivalStatus,
+  updateAppointmentConfirmationStatus,
+} from "../../../util/requests/appointmentRequest";
 import dayjs from "dayjs";
 import { formatDate } from "../../../util/functions/date";
 
@@ -60,17 +67,19 @@ function SearchAppointment() {
   const [isCompletedShown, setIsCompletedShown] = useState<boolean>(false);
 
   const { data, isSuccess, isFetched } = useQuery({
-    queryKey: ['appointment'],
+    queryKey: ["appointment"],
     queryFn: getAllAppointments,
     placeholderData: [],
   });
-  const [appointmentList, setAppointmentList] = useState<AppointmentResponse[]>([]);
+  const [appointmentList, setAppointmentList] = useState<AppointmentResponse[]>(
+    [],
+  );
 
-  useEffect(()=>{
-    if(isFetched){
+  useEffect(() => {
+    if (isFetched) {
       setAppointmentList(data);
     }
-  },[isFetched])
+  }, [isFetched]);
 
   const handleSearchByChange = (e: SelectChangeEvent) => {
     setSearchType(e.target.value);
@@ -82,7 +91,7 @@ function SearchAppointment() {
 
   const handleCompeletedShownChange = () => {
     setIsCompletedShown((prev) => !prev);
-  }
+  };
 
   const handleSearchSubmit = async () => {
     let data;
@@ -100,12 +109,18 @@ function SearchAppointment() {
   };
 
   const handleEditAppointmentArrivalStatus = async (payload) => {
-    const response = updateAppointmentArrivalStatus({params: payload.appointmentId, formState: {isArrival: true, fkPatientId: payload.patientId}});
+    const response = updateAppointmentArrivalStatus({
+      params: payload.appointmentId,
+      formState: { isArrival: true, fkPatientId: payload.patientId },
+    });
     const data = await response;
   };
 
   const handleEditAppointmentConfirmationStatus = async (payload) => {
-    const response = updateAppointmentConfirmationStatus({params: payload.appointmentId, formState: {isConfirmed: true}});
+    const response = updateAppointmentConfirmationStatus({
+      params: payload.appointmentId,
+      formState: { isConfirmed: true },
+    });
     const data = await response;
   };
 
@@ -134,18 +149,22 @@ function SearchAppointment() {
           </Button>
         </Grid2>
         <Grid2>
-          <Button variant="contained" size="large" onClick={handleCompeletedShownChange}>
+          <Button
+            variant="contained"
+            size="large"
+            onClick={handleCompeletedShownChange}
+          >
             Show Completed
           </Button>
         </Grid2>
-          <DataTable
-            rows={appointmentList}
-            action={handleEditAppointmentArrivalStatus}
-            secondaryAction={handleEditAppointmentConfirmationStatus}
-            columns={columns}
-            isAppointmentTable={true}
-            isCompletedShown={isCompletedShown}
-          />
+        <DataTable
+          rows={appointmentList}
+          action={handleEditAppointmentArrivalStatus}
+          secondaryAction={handleEditAppointmentConfirmationStatus}
+          columns={columns}
+          isAppointmentTable={true}
+          isCompletedShown={isCompletedShown}
+        />
       </Grid2>
     </section>
   );

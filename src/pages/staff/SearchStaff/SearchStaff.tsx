@@ -19,7 +19,7 @@ import {
   getStaffByIcNo,
   getStaffById,
   getStaffByName,
-  getAllStaff
+  getAllStaff,
 } from "../../../util/requests/staffRequest";
 import { useQuery } from "@tanstack/react-query";
 
@@ -54,8 +54,8 @@ const columns: readonly Column[] = [
     minWidth: 100,
   },
   {
-    id: 'email',
-    label: 'Email',
+    id: "email",
+    label: "Email",
     minWidth: 100,
   },
   {
@@ -76,17 +76,17 @@ function SearchStaff() {
   const { setStaffEditFormData } = useStore();
   const navigate = useNavigate();
   const { data, isSuccess, isFetched } = useQuery({
-    queryKey: ['staff'],
+    queryKey: ["staff"],
     queryFn: getAllStaff,
     placeholderData: [],
   });
   const [staffList, setStaffList] = useState<StaffResponse[]>([]);
 
-  useEffect(()=>{
-    if(isFetched){
+  useEffect(() => {
+    if (isFetched) {
       setStaffList(data);
     }
-  },[isFetched])
+  }, [isFetched]);
 
   const handleSearchByChange = (e: SelectChangeEvent) => {
     setSearchType(e.target.value);
@@ -140,11 +140,11 @@ function SearchStaff() {
             Search
           </Button>
         </Grid2>
-          <DataTable
-            rows={staffList}
-            action={handleEditStaff}
-            columns={columns}
-          />
+        <DataTable
+          rows={staffList}
+          action={handleEditStaff}
+          columns={columns}
+        />
       </Grid2>
     </section>
   );

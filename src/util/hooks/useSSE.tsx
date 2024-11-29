@@ -10,27 +10,23 @@ const useSSE = (url: string) => {
     eventSource.onmessage = () => {
       console.log("triggered");
       setTrigger((prev) => !prev);
-    }
+    };
 
     eventSource.onerror = (error) => {
-      // Avoid logging on first connection attempt (may happen after page refresh)
       if (isFirstConnection) {
-        console.log("first time ko to");
-        setIsFirstConnection(false);  // Update flag after first connection
+        setIsFirstConnection(false);
         return;
       }
 
-      console.log("SSE error", error);
       eventSource.close();
-    }
+    };
 
     return () => {
-      console.log("Closing SSE connection");
       eventSource.close();
-    }
+    };
   }, [url]);
 
   return trigger;
-}
+};
 
 export default useSSE;

@@ -2,14 +2,24 @@ import { Grid2, MenuItem, Button, SelectChangeEvent } from "@mui/material";
 import SearchField from "../../../components/input/SearchField";
 import SelectDropdown from "../../../components/input/SelectDropdown";
 import DataTable, { Column } from "../../../components/table/DataTable";
-import styles from "./SearchReport.module.css"
+import styles from "./SearchReport.module.css";
 import { useEffect, useState } from "react";
-import { getAppointmentByName, getAppointmentByIcNo, getAppointmentById, getAllAppointments } from "../../../util/requests/appointmentRequest";
+import {
+  getAppointmentByName,
+  getAppointmentByIcNo,
+  getAppointmentById,
+  getAllAppointments,
+} from "../../../util/requests/appointmentRequest";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import { routes } from "../../../util/routes/routes";
 import useStore from "../../../util/store/store";
-import { getAllReports, getReportByIcNo, getReportById, getReportByName } from "../../../util/requests/reportRequest";
+import {
+  getAllReports,
+  getReportByIcNo,
+  getReportById,
+  getReportByName,
+} from "../../../util/requests/reportRequest";
 
 const columns: readonly Column[] = [
   { id: "reportId", label: "Report ID", minWidth: 100 },
@@ -28,25 +38,25 @@ const columns: readonly Column[] = [
   },
 ];
 
-function SearchReport(){
+function SearchReport() {
   const [searchType, setSearchType] = useState<string>("");
   const [searchText, setSearchText] = useState<string>("");
   const [appointmentList, setAppointmentList] = useState([]);
   const navigate = useNavigate();
-  const {setReportCreateFormData} = useStore();
+  const { setReportCreateFormData } = useStore();
 
   const { data, isSuccess, isFetched } = useQuery({
-    queryKey: ['report'],
+    queryKey: ["report"],
     queryFn: getAllReports,
     placeholderData: [],
   });
 
-  useEffect(()=>{
-    if(isFetched){
+  useEffect(() => {
+    if (isFetched) {
       setAppointmentList(data);
     }
-  },[isFetched])
-  
+  }, [isFetched]);
+
   const handleSearchByChange = (e: SelectChangeEvent) => {
     setSearchType(e.target.value);
   };
@@ -73,10 +83,9 @@ function SearchReport(){
   const handleCreateReport = (payload) => {
     setReportCreateFormData(payload);
     navigate(routes.addReport);
-  }
+  };
 
-  
-  return(
+  return (
     <section className={styles.mainCont}>
       <h1>Search Report</h1>
       <Grid2 container spacing={3}>
@@ -100,14 +109,14 @@ function SearchReport(){
             Search
           </Button>
         </Grid2>
-          <DataTable
-            rows={appointmentList}
-            action={handleCreateReport}
-            columns={columns}
-          />
+        <DataTable
+          rows={appointmentList}
+          action={handleCreateReport}
+          columns={columns}
+        />
       </Grid2>
     </section>
-  )
+  );
 }
 
 export default SearchReport;

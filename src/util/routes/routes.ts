@@ -21,7 +21,7 @@ const visitationRoutes = {
   appointmentReport: "/visitation/report",
   addReport: "/visitation/report/add",
   searchReport: "/visitation/report/details",
-  addMc: "/visitation/medical-certificate/add"
+  addMc: "/visitation/medical-certificate/add",
 };
 
 export const routes = {

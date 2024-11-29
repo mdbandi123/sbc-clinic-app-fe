@@ -1,15 +1,15 @@
-.mainCont{
-  padding: 2em
+.mainCont {
+  padding: 2em;
 }
 
-.button{
-  margin-top: 10%
+.button {
+  margin-top: 10%;
 }
 
-.nowServingNum{
+.nowServingNum {
   text-align: center;
 }
 
-.nowServingHeader{
+.nowServingHeader {
   text-align: center;
 }
