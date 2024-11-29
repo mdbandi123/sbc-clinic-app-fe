@@ -58,6 +58,14 @@ function Form({state, handleDispatch, formType, staffChoices = []}: FormProps){
     handleDispatch({type: 'staff', payload: e.target.value})
   }
 
+  const handleReasonChange:ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (e) => {
+    handleDispatch({type: 'reason', payload: e.target.value})
+  }
+
+  const handleDayChange:ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (e) => {
+    handleDispatch({type: 'day', payload: e.target.value})
+  }
+
   if(formType === 'patient' || formType === 'staff'){
     return(
       <Grid2 container spacing={3}>
@@ -176,6 +184,37 @@ function Form({state, handleDispatch, formType, staffChoices = []}: FormProps){
                   })
                 }
             </SelectDropdown>
+          </Grid2>
+        </Grid2>
+      </>)
+    }
+
+    if(formType === 'medcert'){
+      return (<>
+        <Grid2 container spacing={3}>
+          <Grid2 size={6}>
+            <TextField
+              multiline
+              required
+              id="outlined-required"
+              label="Reason"
+              value={state.reason}
+              onChange={handleReasonChange}
+              sx={{width:'100%'}}
+            />
+          </Grid2>
+          <Grid2 size={3}>
+            <DateTimeInput handleDispatch = {handleDispatch}/>
+          </Grid2>
+          <Grid2 size={3}>
+          <TextField
+              required
+              id="outlined-required"
+              label="Number of days"
+              value={state.day}
+              onChange={handleDayChange}
+              sx={{width:'100%'}}
+            />
           </Grid2>
         </Grid2>
       </>)

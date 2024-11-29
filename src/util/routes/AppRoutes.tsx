@@ -12,6 +12,7 @@ import SearchAppointment from "../../pages/appointment/SearchAppointment/SearchA
 import AppointmentReport from "../../pages/visitation/AppointmentReport/AppointmentReport";
 import AddReportForm from "../../pages/visitation/AddReportForm/AddReportForm";
 import SearchReport from "../../pages/visitation/SearchReport/SearchReport";
+import AddMedCert from "../../pages/visitation/AddMedCert/AddMedCert";
 
 function AppRoutes(){
   return(
@@ -29,6 +30,7 @@ function AppRoutes(){
       <Route path={routes.appointmentReport} element={<AppointmentReport/>}/>
       <Route path={routes.addReport} element={<AddReportForm/>}/>
       <Route path={routes.searchReport} element={<SearchReport/>}/>
+      <Route path={routes.addMc} element={<AddMedCert/>}/>
     </Routes>
   )
 }

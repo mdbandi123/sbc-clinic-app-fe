@@ -11,7 +11,7 @@ function DateTimeInput({handleDispatch}) {
   
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DateTimePicker label="Schedule Date & Time" onChange={handleDateTimeChange}/>
+        <DateTimePicker label="Date & Time" onChange={handleDateTimeChange} sx={{width: '100%'}}/>
     </LocalizationProvider>
   );
 }
