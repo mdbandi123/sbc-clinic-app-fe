@@ -1,10 +1,13 @@
-import { useReducer } from "react";
+import { useReducer, useState } from "react";
 import styles from "./EditStaffForm.module.css";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "@mui/material";
 import Form from "../../../components/form/Form";
 import { insertStaff, updateStaff } from "../../../util/requests/staffRequest";
 import useStore from "../../../util/store/store";
+import Toast from "../../../components/feedback/Toast";
+import { useNavigate } from "react-router";
+import { routes } from "../../../util/routes/routes";
 
 type StaffState = {
   name: string;
@@ -21,8 +24,20 @@ type ActionType = {
   payload: string;
 };
 
+const initialState = {
+  name: "",
+  icNo: "",
+  gender: "",
+  address: "",
+  contactNo: "",
+  position: "",
+  email: "",
+}
+
 function EditStaffForm() {
-  const { staffEditFormData } = useStore();
+  const { staffEditFormData, toggleStaffTrigger, setToolbarTitle, setIsSuccessfulStaffEdit } = useStore();
+  const [isError, setIsError] = useState<boolean>(false);
+  const navigate = useNavigate();
   const [state, dispatch] = useReducer(
     (state: StaffState, action: ActionType) => {
       if (action.type === "name") {
@@ -39,6 +54,8 @@ function EditStaffForm() {
         return { ...state, position: action.payload };
       } else if (action.type === "email") {
         return { ...state, email: action.payload };
+      } else if (action.type === "reset") {
+        return initialState;
       }
     },
     staffEditFormData,
@@ -47,10 +64,13 @@ function EditStaffForm() {
   const mutation = useMutation({
     mutationFn: updateStaff,
     onSuccess: (data) => {
-      console.log("staff updated:", data);
+      toggleStaffTrigger();
+      resetInputFields();
+      setIsSuccessfulStaffEdit(true);
+      navigate(routes.searchStaff);
     },
     onError: (error) => {
-      console.error("Error updating staff:", error);
+      handleErrorToastOpen();
     },
   });
 
@@ -67,6 +87,18 @@ function EditStaffForm() {
     mutation.mutate(payload);
   };
 
+  const handleErrorToastClose = () => {
+    setIsError(false);
+  };
+
+  const handleErrorToastOpen = () => {
+    setIsError(true);
+  };
+
+  const resetInputFields = () => {
+    dispatch({ type: "reset", payload: null });
+  };
+
   return (
     <section className={styles.mainCont}>
       <h1>Edit Staff</h1>
@@ -76,6 +108,12 @@ function EditStaffForm() {
           Edit Staff
         </Button>
       </div>
+      <Toast
+        isOpen={isError}
+        message={"Error encountered"}
+        onClose={handleErrorToastClose}
+        isError
+      />
     </section>
   );
 }

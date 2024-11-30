@@ -22,6 +22,7 @@ import {
   getAllStaff,
 } from "../../../util/requests/staffRequest";
 import { useQuery } from "@tanstack/react-query";
+import Toast from "../../../components/feedback/Toast";
 
 type StaffResponse = {
   staffId: number;
@@ -73,10 +74,11 @@ const columns: readonly Column[] = [
 function SearchStaff() {
   const [searchType, setSearchType] = useState<string>("");
   const [searchText, setSearchText] = useState<string>("");
-  const { setStaffEditFormData } = useStore();
+  const [resetSearchToggle, setResetSearchToggle] = useState<boolean>(false);
+  const { setStaffEditFormData, setIsSuccessfulStaffEdit, isSuccessfulStaffEdit, staffTrigger } = useStore();
   const navigate = useNavigate();
   const { data, isSuccess, isFetched } = useQuery({
-    queryKey: ["staff"],
+    queryKey: ["staff" ,staffTrigger],
     queryFn: getAllStaff,
     placeholderData: [],
   });
@@ -86,7 +88,7 @@ function SearchStaff() {
     if (isFetched) {
       setStaffList(data);
     }
-  }, [isFetched]);
+  }, [isFetched, resetSearchToggle]);
 
   const handleSearchByChange = (e: SelectChangeEvent) => {
     setSearchType(e.target.value);
@@ -118,6 +120,14 @@ function SearchStaff() {
     navigate(routes.editStaff);
   };
 
+  const handleResetToggle = () => {
+    setResetSearchToggle((prev) => !prev);
+  };
+
+  const handleEditSuccessToastClose = () => {
+    setIsSuccessfulStaffEdit(false);
+  };
+
   return (
     <section className={styles.mainCont}>
       <h1>Search Staff</h1>
@@ -142,12 +152,22 @@ function SearchStaff() {
             Search
           </Button>
         </Grid2>
+        <Grid2>
+          <Button variant="contained" size="large" onClick={handleResetToggle}>
+            Reset
+          </Button>
+        </Grid2>
         <DataTable
           rows={staffList}
           action={handleEditStaff}
           columns={columns}
         />
       </Grid2>
+      <Toast
+        isOpen={isSuccessfulStaffEdit}
+        message={"Patient details successfully changed!"}
+        onClose={handleEditSuccessToastClose}
+      />
     </section>
   );
 }

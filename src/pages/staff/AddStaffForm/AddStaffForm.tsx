@@ -1,9 +1,11 @@
-import { useReducer } from "react";
+import { useEffect, useReducer, useState } from "react";
 import styles from "./AddStaffForm.module.css";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "@mui/material";
 import Form from "../../../components/form/Form";
 import { insertStaff } from "../../../util/requests/staffRequest";
+import useStore from "../../../util/store/store";
+import Toast from "../../../components/feedback/Toast";
 
 type StaffState = {
   name: string;
@@ -20,7 +22,20 @@ type ActionType = {
   payload: string;
 };
 
+const initialState = {
+  name: "",
+  icNo: "",
+  gender: "",
+  address: "",
+  contactNo: "",
+  position: "",
+  email: "",
+}
+
 function AddStaffForm() {
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
+  const {setToolbarTitle} = useStore();
   const [state, dispatch] = useReducer(
     (state: StaffState, action: ActionType) => {
       if (action.type === "name") {
@@ -37,26 +52,25 @@ function AddStaffForm() {
         return { ...state, position: action.payload };
       } else if (action.type === "email") {
         return { ...state, email: action.payload };
+      } else if (action.type === "reset") {
+        return initialState;
       }
     },
-    {
-      name: "",
-      icNo: "",
-      gender: "",
-      address: "",
-      contactNo: "",
-      position: "",
-      email: "",
-    },
+    initialState
   );
+
+  useEffect(() => {
+    setToolbarTitle('Add Staff')
+  }, [])
 
   const mutation = useMutation({
     mutationFn: insertStaff,
     onSuccess: (data) => {
-      console.log("staff created:", data);
+      resetInputFields();
+      handleSuccessToastOpen();
     },
     onError: (error) => {
-      console.error("Error creating staff:", error);
+      handleErrorToastOpen();
     },
   });
 
@@ -68,15 +82,37 @@ function AddStaffForm() {
     mutation.mutate(state);
   };
 
+  const handleSuccessToastClose = () => {
+    setIsSuccess(false);
+  }
+
+  const handleSuccessToastOpen = () => {
+    setIsSuccess(true);
+  }
+
+  const handleErrorToastClose = () => {
+    setIsError(false);
+  };
+
+  const handleErrorToastOpen = () => {
+    setIsError(true);
+  };
+
+  const resetInputFields = () => {
+    dispatch({ type: "reset", payload: null });
+  };
+
   return (
     <section className={styles.mainCont}>
-      <h1>Add Staff</h1>
+      <h2>Staff Details:</h2>
       <Form handleDispatch={handleDispatch} state={state} formType="staff" />
       <div className={styles.button}>
         <Button variant="contained" size="large" onClick={handleFormSubmit}>
-          Add New Patient
+          Add New Staff
         </Button>
       </div>
+      <Toast isOpen={isSuccess} message={"Medical certificate successfully generated!"} onClose={handleSuccessToastClose}/>
+      <Toast isOpen={isError} message={"Error encountered"} onClose={handleErrorToastClose} isError/>
     </section>
   );
 }
