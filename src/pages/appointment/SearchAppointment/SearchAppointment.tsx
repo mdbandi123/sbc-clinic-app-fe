@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 import DataTable, { Column } from "../../../components/table/DataTable";
 import useStore from "../../../util/store/store";
 import { useNavigate } from "react-router";
-import { routes } from "../../../util/routes/routes";
+import { BASE_URL, routes } from "../../../util/routes/routes";
 import {
   getStaffByIcNo,
   getStaffById,
@@ -32,6 +32,7 @@ import {
 } from "../../../util/requests/appointmentRequest";
 import dayjs from "dayjs";
 import { formatDate } from "../../../util/functions/date";
+import useSSE from "../../../util/hooks/useSSE";
 
 type AppointmentResponse = {
   appointmentId: number;
@@ -62,13 +63,14 @@ const columns: readonly Column[] = [
 ];
 
 function SearchAppointment() {
+  const {aptArrivalTrigger, aptConfTrigger} = useSSE(`${BASE_URL}/api/sse/subscribe`);
   const [searchType, setSearchType] = useState<string>("");
   const [searchText, setSearchText] = useState<string>("");
   const [isCompletedShown, setIsCompletedShown] = useState<boolean>(false);
   const {setToolbarTitle} = useStore()
 
-  const { data, isSuccess, isFetched } = useQuery({
-    queryKey: ["appointment"],
+  const { data, refetch, isFetched } = useQuery({
+    queryKey: ["appointment", aptArrivalTrigger, aptConfTrigger],
     queryFn: getAllAppointments,
     placeholderData: [],
   });
@@ -81,6 +83,11 @@ function SearchAppointment() {
       setAppointmentList(data);
     }
   }, [isFetched]);
+
+  
+  useEffect(()=>{
+    refetch();
+  }, [aptArrivalTrigger, aptConfTrigger])
 
   useEffect(() => {
     setToolbarTitle('List Appointments')

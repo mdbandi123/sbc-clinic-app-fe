@@ -41,7 +41,7 @@ type DataTableProps = {
   isQueueTable?: boolean,
   isVisitationTable?: boolean,
   secondaryAction?: (e: Record<string, string>) => void,
-  isCompletedShown?: false
+  isCompletedShown?: boolean
 }
 
 function DataTable({

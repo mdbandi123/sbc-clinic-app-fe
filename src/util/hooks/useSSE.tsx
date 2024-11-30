@@ -2,10 +2,14 @@ import { useState, useEffect } from "react";
 
 const sseEventNames = {
   queueCheckin: "queueCheckin",
+  appointmentConfirmation: "appointmentConfirmation",
+  appointmentArrival: "appointmentArrival"
 };
 
 const useSSE = (url: string) => {
   const [queueTrigger, setQueueTrigger] = useState<boolean>(false);
+  const [aptConfTrigger, setAptConfTrigger] = useState<boolean>(false);
+  const [aptArrivalTrigger, setAptArrivalTrigger] = useState<boolean>(false);
   const [isFirstConnection, setIsFirstConnection] = useState<boolean>(true);
 
   useEffect(() => {
@@ -13,6 +17,14 @@ const useSSE = (url: string) => {
 
     eventSource.addEventListener(sseEventNames.queueCheckin, () => {
       setQueueTrigger((prev) => !prev);
+    });
+
+    eventSource.addEventListener(sseEventNames.appointmentConfirmation, () => {
+      setAptConfTrigger((prev) => !prev);
+    });
+
+    eventSource.addEventListener(sseEventNames.appointmentArrival, () => {
+      setAptArrivalTrigger((prev) => !prev);
     });
 
     eventSource.onerror = (error: Event) => {
@@ -29,7 +41,7 @@ const useSSE = (url: string) => {
     };
   }, [url]);
 
-  return { queueTrigger };
+  return { queueTrigger, aptConfTrigger, aptArrivalTrigger };
 };
 
 export default useSSE;
