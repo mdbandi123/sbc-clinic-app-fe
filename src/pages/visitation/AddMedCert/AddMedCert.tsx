@@ -6,7 +6,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
-import { useReducer, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import {
   getPatientByIcNo,
   getPatientById,
@@ -18,6 +18,10 @@ import Form from "../../../components/form/Form";
 import SearchField from "../../../components/input/SearchField";
 import { insertAppointment } from "../../../util/requests/appointmentRequest";
 import { insertMedCert } from "../../../util/requests/medicalCertificateRequest";
+import useStore from "../../../util/store/store";
+import InitialDataScreen from "../../../components/table/InitialDataScreen/InitialDataScreen";
+import NoDataScreen from "../../../components/table/NoDataFound/NoDataScreen";
+import Toast from "../../../components/feedback/Toast";
 
 type ActionType = {
   type: string;
@@ -35,33 +39,44 @@ type PatientResponse = {
   profileImage: string;
 };
 
+const initialState = {
+  reason: "",
+  date: "",
+  day: "",
+};
+
 function AddMedCert() {
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
+  const { setToolbarTitle } = useStore();
   const [searchText, setSearchText] = useState<string>("");
   const [patientDetails, setPatientDetails] = useState<
-    PatientResponse | undefined
-  >(undefined);
-  const [state, dispatch] = useReducer(
-    (state, action: ActionType) => {
-      if (action.type === "reason") {
-        return { ...state, reason: action.payload };
-      } else if (action.type === "date") {
-        return { ...state, date: action.payload };
-      } else if (action.type === "day") {
-        return { ...state, day: action.payload };
-      }
-    },
-    {
-      reason: "",
-      date: "",
-      day: "",
-    },
-  );
+    PatientResponse | undefined | null
+  >(null);
+  const [state, dispatch] = useReducer((state, action: ActionType) => {
+    if (action.type === "reason") {
+      return { ...state, reason: action.payload };
+    } else if (action.type === "date") {
+      return { ...state, date: action.payload };
+    } else if (action.type === "day") {
+      return { ...state, day: action.payload };
+    } else if (action.type === "reset") {
+      return initialState;
+    }
+  }, initialState);
+
+  useEffect(() => {
+    setToolbarTitle("Generate Medical Certificates");
+  }, []);
 
   const mutation = useMutation({
     mutationFn: insertMedCert,
     onSuccess: (data) => {
+      resetInputFields();
+      handleSuccessToastOpen();
     },
     onError: (error) => {
+      handleErrorToastOpen();
     },
   });
 
@@ -89,19 +104,60 @@ function AddMedCert() {
     setPatientDetails(data[0]);
   };
 
+  const handleSuccessToastClose = () => {
+    setIsSuccess(false);
+  }
+
+  const handleSuccessToastOpen = () => {
+    setIsSuccess(true);
+  }
+
+  const handleErrorToastClose = () => {
+    setIsError(false);
+  };
+
+  const handleErrorToastOpen = () => {
+    setIsError(true);
+  };
+
+  const resetInputFields = () => {
+    dispatch({ type: "reset", payload: null });
+  };
+
   return (
     <section className={styles.mainCont}>
-      <h1>Add Appointment</h1>
-      <Grid2 container spacing={3}>
-        <Grid2 size={3}>
-          <SearchField onChange={handleSearchTextChange} value={searchText} />
+      <div>
+        <Typography sx={{ fontSize: "1.1em", marginBottom: "2em" }}>
+          Enter your patient's name below to load details.
+        </Typography>
+        <Grid2 container spacing={3}>
+          <Grid2 size={3}>
+            <SearchField onChange={handleSearchTextChange} value={searchText} />
+          </Grid2>
+          <Grid2>
+            <Button
+              variant="contained"
+              size="large"
+              onClick={handleSearchSubmit}
+            >
+              Search
+            </Button>
+          </Grid2>
         </Grid2>
-        <Grid2>
-          <Button variant="contained" size="large" onClick={handleSearchSubmit}>
-            Search
-          </Button>
-        </Grid2>
-        {patientDetails !== undefined ? (
+      </div>
+      <div>
+        {patientDetails === null && (
+          <div className={styles.formCont}>
+            <InitialDataScreen />
+          </div>
+        )}
+
+        {patientDetails === undefined && (
+          <div className={styles.formCont}>
+            <NoDataScreen />
+          </div>
+        )}
+        {patientDetails !== null && patientDetails !== undefined && (
           <>
             <Grid2 container size={12} spacing={3}>
               <Grid2 size={12}>
@@ -167,12 +223,10 @@ function AddMedCert() {
               </div>
             </Grid2>
           </>
-        ) : (
-          <Grid2 size={12}>
-            <h1>no data</h1>
-          </Grid2>
         )}
-      </Grid2>
+      </div>
+      <Toast isOpen={isSuccess} message={"Medical certificate successfully generated!"} onClose={handleSuccessToastClose}/>
+      <Toast isOpen={isError} message={"Error encountered"} onClose={handleErrorToastClose} isError/>
     </section>
   );
 }
