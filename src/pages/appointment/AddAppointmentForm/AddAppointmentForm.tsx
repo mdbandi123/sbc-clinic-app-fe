@@ -130,7 +130,7 @@ function AddAppointmentForm() {
         <Typography sx={{ fontSize: "1.1em", marginBottom: "2em" }}>
           Please enter your IC No. to load your patient profile to begin you
           appointment creation. (Note: For first time patients, please proceed
-          to our nurses to create your record first)
+          to our nurse bay to create your record first)
         </Typography>
         <Grid2 container spacing={3}>
           <Grid2 size={3}>
