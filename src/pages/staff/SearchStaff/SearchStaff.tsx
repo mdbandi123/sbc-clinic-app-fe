@@ -75,7 +75,7 @@ function SearchStaff() {
   const [searchType, setSearchType] = useState<string>("");
   const [searchText, setSearchText] = useState<string>("");
   const [resetSearchToggle, setResetSearchToggle] = useState<boolean>(false);
-  const { setStaffEditFormData, setIsSuccessfulStaffEdit, isSuccessfulStaffEdit, staffTrigger } = useStore();
+  const { setStaffEditFormData, setIsSuccessfulStaffEdit, isSuccessfulStaffEdit, staffTrigger, setToolbarTitle } = useStore();
   const navigate = useNavigate();
   const { data, isSuccess, isFetched } = useQuery({
     queryKey: ["staff" ,staffTrigger],
@@ -89,6 +89,10 @@ function SearchStaff() {
       setStaffList(data);
     }
   }, [isFetched, resetSearchToggle]);
+
+  useEffect(() => {
+    setToolbarTitle('List Staff')
+  },[])
 
   const handleSearchByChange = (e: SelectChangeEvent) => {
     setSearchType(e.target.value);
@@ -130,7 +134,6 @@ function SearchStaff() {
 
   return (
     <section className={styles.mainCont}>
-      <h1>Search Staff</h1>
       <Grid2 container spacing={3}>
         <Grid2 size={2}>
           <SelectDropdown
