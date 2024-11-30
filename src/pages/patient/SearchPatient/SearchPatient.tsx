@@ -108,6 +108,8 @@ function SearchPatient() {
     } else if (searchType === "id") {
       const response = getPatientById(searchText);
       data = await response;
+    } else {
+      return;
     }
     setPatientList(data);
   };

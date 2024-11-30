@@ -43,7 +43,8 @@ function SearchReport() {
   const [searchText, setSearchText] = useState<string>("");
   const [appointmentList, setAppointmentList] = useState([]);
   const navigate = useNavigate();
-  const { setReportCreateFormData } = useStore();
+  const { setReportCreateFormData, setToolbarTitle } = useStore();
+  const [resetSearchToggle, setResetSearchToggle] = useState<boolean>(false);
 
   const { data, isSuccess, isFetched } = useQuery({
     queryKey: ["report"],
@@ -55,7 +56,11 @@ function SearchReport() {
     if (isFetched) {
       setAppointmentList(data);
     }
-  }, [isFetched]);
+  }, [isFetched, resetSearchToggle]);
+
+  useEffect(() => {
+    setToolbarTitle('List Reports')
+  }, [])
 
   const handleSearchByChange = (e: SelectChangeEvent) => {
     setSearchType(e.target.value);
@@ -76,6 +81,8 @@ function SearchReport() {
     } else if (searchType === "id") {
       const response = getReportById(searchText);
       data = await response;
+    } else {
+      return;
     }
     setAppointmentList(data);
   };
@@ -85,9 +92,12 @@ function SearchReport() {
     navigate(routes.addReport);
   };
 
+  const handleResetToggle = () => {
+    setResetSearchToggle((prev) => !prev);
+  };
+
   return (
     <section className={styles.mainCont}>
-      <h1>Search Report</h1>
       <Grid2 container spacing={3}>
         <Grid2 size={2}>
           <SelectDropdown
@@ -107,6 +117,11 @@ function SearchReport() {
         <Grid2>
           <Button variant="contained" size="large" onClick={handleSearchSubmit}>
             Search
+          </Button>
+        </Grid2>
+        <Grid2>
+          <Button variant="contained" size="large" onClick={handleResetToggle}>
+            Reset
           </Button>
         </Grid2>
         <DataTable

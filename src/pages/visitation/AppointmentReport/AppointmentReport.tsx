@@ -34,9 +34,10 @@ const columns: readonly Column[] = [
 function AppointmentReport() {
   const [searchType, setSearchType] = useState<string>("");
   const [searchText, setSearchText] = useState<string>("");
+  const [resetSearchToggle, setResetSearchToggle] = useState<boolean>(false);
   const [appointmentList, setAppointmentList] = useState([]);
   const navigate = useNavigate();
-  const { setReportCreateFormData } = useStore();
+  const { setReportCreateFormData, setToolbarTitle } = useStore();
 
   const { data, isSuccess, isFetched } = useQuery({
     queryKey: ["appointment"],
@@ -48,7 +49,7 @@ function AppointmentReport() {
     if (isFetched) {
       setAppointmentList(data);
     }
-  }, [isFetched]);
+  }, [isFetched, resetSearchToggle]);
 
   const handleSearchByChange = (e: SelectChangeEvent) => {
     setSearchType(e.target.value);
@@ -57,6 +58,10 @@ function AppointmentReport() {
   const handleSearchTextChange = (e: SelectChangeEvent) => {
     setSearchText(e.target.value);
   };
+
+  useEffect(() => {
+    setToolbarTitle("Create Report");
+  }, []);
 
   const handleSearchSubmit = async () => {
     let data;
@@ -69,6 +74,8 @@ function AppointmentReport() {
     } else if (searchType === "id") {
       const response = getAppointmentById(searchText);
       data = await response;
+    } else {
+      return;
     }
     setAppointmentList(data);
   };
@@ -78,9 +85,12 @@ function AppointmentReport() {
     navigate(routes.addReport);
   };
 
+  const handleResetToggle = () => {
+    setResetSearchToggle((prev) => !prev);
+  };
+
   return (
     <section className={styles.mainCont}>
-      <h1>Create Report</h1>
       <Grid2 container spacing={3}>
         <Grid2 size={2}>
           <SelectDropdown
@@ -100,6 +110,11 @@ function AppointmentReport() {
         <Grid2>
           <Button variant="contained" size="large" onClick={handleSearchSubmit}>
             Search
+          </Button>
+        </Grid2>
+        <Grid2>
+          <Button variant="contained" size="large" onClick={handleResetToggle}>
+            Reset
           </Button>
         </Grid2>
         <DataTable

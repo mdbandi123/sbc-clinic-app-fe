@@ -6,7 +6,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
-import { useReducer, useState } from "react";
+import { ChangeEventHandler, useEffect, useReducer, useState } from "react";
 import {
   getPatientByIcNo,
   getPatientById,
@@ -17,6 +17,10 @@ import styles from "./AddAppointmentForm.module.css";
 import Form from "../../../components/form/Form";
 import SearchField from "../../../components/input/SearchField";
 import { insertAppointment } from "../../../util/requests/appointmentRequest";
+import useStore from "../../../util/store/store";
+import InitialDataScreen from "../../../components/table/InitialDataScreen/InitialDataScreen";
+import NoDataScreen from "../../../components/table/NoDataFound/NoDataScreen";
+import Toast from "../../../components/feedback/Toast";
 
 type ActionType = {
   type: string;
@@ -34,36 +38,50 @@ type PatientResponse = {
   profileImage: string;
 };
 
+const initialState = {
+  remark: "",
+  date: "",
+}
+
 function AddAppointmentForm() {
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
   const [searchText, setSearchText] = useState<string>("");
   const [patientDetails, setPatientDetails] = useState<
-    PatientResponse | undefined
-  >(undefined);
+    PatientResponse | undefined | null
+  >(null);
+  const { setToolbarTitle } = useStore();
   const [state, dispatch] = useReducer(
     (state, action: ActionType) => {
       if (action.type === "remark") {
         return { ...state, remark: action.payload };
       } else if (action.type === "date") {
         return { ...state, date: action.payload };
+      } else if (action.type === "reset") {
+        return initialState;
       }
     },
-    {
-      remark: "",
-      date: "",
-    },
+    initialState
   );
 
   const mutation = useMutation({
     mutationFn: insertAppointment,
     onSuccess: (data) => {
-      console.log("patient created:", data);
+      resetInputFields();
+      handleSuccessToastOpen();
     },
     onError: (error) => {
-      console.error("Error creating patient:", error);
+      handleErrorToastOpen();
     },
   });
 
-  const handleSearchTextChange = (e: SelectChangeEvent) => {
+  useEffect(() => {
+    setToolbarTitle("Create Appointment");
+  }, []);
+
+  const handleSearchTextChange: ChangeEventHandler<
+    HTMLInputElement | HTMLTextAreaElement
+  > = (e) => {
     setSearchText(e.target.value);
   };
 
@@ -86,21 +104,64 @@ function AddAppointmentForm() {
     setPatientDetails(data[0]);
   };
 
+  const handleSuccessToastClose = () => {
+    setIsSuccess(false);
+  }
+
+  const handleSuccessToastOpen = () => {
+    setIsSuccess(true);
+  }
+
+  const handleErrorToastClose = () => {
+    setIsError(false);
+  };
+
+  const handleErrorToastOpen = () => {
+    setIsError(true);
+  };
+
+  const resetInputFields = () => {
+    dispatch({ type: "reset", payload: null });
+  };
+
   return (
     <section className={styles.mainCont}>
-      <h1>Add Appointment</h1>
-      <Grid2 container spacing={3}>
-        <Grid2 size={3}>
-          <SearchField onChange={handleSearchTextChange} value={searchText} />
+      <div>
+        <Typography sx={{ fontSize: "1.1em", marginBottom: "2em" }}>
+          Please enter your IC No. to load your patient profile to begin you
+          appointment creation. (Note: For first time patients, please proceed
+          to our nurses to create your record first)
+        </Typography>
+        <Grid2 container spacing={3}>
+          <Grid2 size={3}>
+            <SearchField onChange={handleSearchTextChange} value={searchText} />
+          </Grid2>
+          <Grid2>
+            <Button
+              variant="contained"
+              size="large"
+              onClick={handleSearchSubmit}
+            >
+              Load Record
+            </Button>
+          </Grid2>
         </Grid2>
-        <Grid2>
-          <Button variant="contained" size="large" onClick={handleSearchSubmit}>
-            Search
-          </Button>
-        </Grid2>
-        {patientDetails !== undefined ? (
+      </div>
+      <div>
+        {patientDetails === null && (
+          <div className={styles.formCont}>
+            <InitialDataScreen />
+          </div>
+        )}
+
+        {patientDetails === undefined && (
+          <div className={styles.formCont}>
+            <NoDataScreen/>
+          </div>
+        )}
+        {patientDetails !== null && patientDetails !== undefined && (
           <>
-            <Grid2 container size={12} spacing={3}>
+            <Grid2 container size={12} spacing={3} sx={{ marginTop: "1em" }}>
               <Grid2 size={12}>
                 <h3>User Details</h3>
               </Grid2>
@@ -141,7 +202,7 @@ function AddAppointmentForm() {
                 />
               </Grid2>
             </Grid2>
-            <Grid2 container spacing={3} size={12}>
+            <Grid2 container spacing={3} size={12} sx={{ marginTop: "1em" }}>
               <Grid2 size={12}>
                 <h3>Appointment Details</h3>
               </Grid2>
@@ -164,12 +225,10 @@ function AddAppointmentForm() {
               </div>
             </Grid2>
           </>
-        ) : (
-          <Grid2 size={12}>
-            <h1>no data</h1>
-          </Grid2>
         )}
-      </Grid2>
+      </div>
+      <Toast isOpen={isSuccess} message={"Appointment successfully created!"} onClose={handleSuccessToastClose}/>
+      <Toast isOpen={isError} message={"Error encountered"} onClose={handleErrorToastClose} isError/>
     </section>
   );
 }

@@ -107,6 +107,8 @@ function SearchStaff() {
     } else if (searchType === "id") {
       const response = getStaffById(searchText);
       data = await response;
+    } else {
+      return;
     }
     setStaffList(data);
   };

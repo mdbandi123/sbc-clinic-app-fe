@@ -1,14 +1,7 @@
 .mainCont {
-  padding: 2em;
-}
-
-.button {
-  margin-top: 3em;
-}
-
-.formCont {
   display: flex;
-  height: 100%;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: 50vh;
 }

@@ -65,6 +65,7 @@ function SearchAppointment() {
   const [searchType, setSearchType] = useState<string>("");
   const [searchText, setSearchText] = useState<string>("");
   const [isCompletedShown, setIsCompletedShown] = useState<boolean>(false);
+  const {setToolbarTitle} = useStore()
 
   const { data, isSuccess, isFetched } = useQuery({
     queryKey: ["appointment"],
@@ -80,6 +81,10 @@ function SearchAppointment() {
       setAppointmentList(data);
     }
   }, [isFetched]);
+
+  useEffect(() => {
+    setToolbarTitle('List Appointments')
+  }, [])
 
   const handleSearchByChange = (e: SelectChangeEvent) => {
     setSearchType(e.target.value);
@@ -104,6 +109,8 @@ function SearchAppointment() {
     } else if (searchType === "id") {
       const response = getAppointmentById(searchText);
       data = await response;
+    } else {
+      return;
     }
     setAppointmentList(data);
   };
@@ -132,7 +139,6 @@ function SearchAppointment() {
 
   return (
     <section className={styles.mainCont}>
-      <h1>Search Appointment</h1>
       <Grid2 container spacing={3}>
         <Grid2 size={2}>
           <SelectDropdown
