@@ -69,20 +69,19 @@ function SearchAppointment() {
   const [isCompletedShown, setIsCompletedShown] = useState<boolean>(false);
   const {setToolbarTitle} = useStore()
 
-  const { data, refetch, isFetched } = useQuery({
+  const { data, refetch, isFetchedAfterMount } = useQuery({
     queryKey: ["appointment", aptArrivalTrigger, aptConfTrigger],
     queryFn: getAllAppointments,
     placeholderData: [],
+    refetchOnMount: "always"
   });
   const [appointmentList, setAppointmentList] = useState<AppointmentResponse[]>(
     []
   );
 
   useEffect(() => {
-    if (isFetched) {
       setAppointmentList(data);
-    }
-  }, [isFetched]);
+  }, [isFetchedAfterMount]);
 
   
   useEffect(()=>{

@@ -17,7 +17,7 @@ function AddReportForm() {
   const { reportCreateFormData } = useStore();
   const [isPostSuccess, setIsPostSuccess] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
-  const { data, isSuccess, isFetched } = useQuery({
+  const { data, isSuccess, isFetchedAfterMount } = useQuery({
     queryKey: ["staff"],
     queryFn: getAllStaff,
     placeholderData: [],

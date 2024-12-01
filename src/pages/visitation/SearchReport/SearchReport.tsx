@@ -46,17 +46,16 @@ function SearchReport() {
   const { setReportCreateFormData, setToolbarTitle } = useStore();
   const [resetSearchToggle, setResetSearchToggle] = useState<boolean>(false);
 
-  const { data, isSuccess, isFetched } = useQuery({
+  const { data, isSuccess, isFetchedAfterMount } = useQuery({
     queryKey: ["report"],
     queryFn: getAllReports,
     placeholderData: [],
+    refetchOnMount: "always"
   });
 
   useEffect(() => {
-    if (isFetched) {
       setAppointmentList(data);
-    }
-  }, [isFetched, resetSearchToggle]);
+  }, [isFetchedAfterMount, resetSearchToggle]);
 
   useEffect(() => {
     setToolbarTitle('List Reports')

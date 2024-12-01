@@ -39,17 +39,15 @@ function AppointmentReport() {
   const navigate = useNavigate();
   const { setReportCreateFormData, setToolbarTitle } = useStore();
 
-  const { data, isSuccess, isFetched } = useQuery({
+  const { data, isSuccess, isFetchedAfterMount } = useQuery({
     queryKey: ["appointment"],
     queryFn: getAllAppointments,
     placeholderData: [],
   });
 
   useEffect(() => {
-    if (isFetched) {
       setAppointmentList(data);
-    }
-  }, [isFetched, resetSearchToggle]);
+  }, [isFetchedAfterMount, resetSearchToggle]);
 
   const handleSearchByChange = (e: SelectChangeEvent) => {
     setSearchType(e.target.value);

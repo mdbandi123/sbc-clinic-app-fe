@@ -72,16 +72,17 @@ function SearchPatient() {
     setIsSuccessfulPatientAdd,
   } = useStore();
   const navigate = useNavigate();
-  const { data, isFetched } = useQuery({
-    queryKey: ["patient", patientTrigger],
+  const { data, isFetchedAfterMount } = useQuery({
+    queryKey: ["patient"],
     queryFn: getAllPatients,
     initialData: [],
+    refetchOnMount: "always"
   });
   const [patientList, setPatientList] = useState<PatientResponse[]>([]);
 
   useEffect(() => {
     setPatientList(data);
-  }, [isFetched, resetSearchToggle]);
+  }, [isFetchedAfterMount, resetSearchToggle]);
 
   useEffect(() => {
     setToolbarTitle("Search Patient");
