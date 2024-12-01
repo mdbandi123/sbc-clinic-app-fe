@@ -111,7 +111,7 @@ function AddStaffForm() {
           Add New Staff
         </Button>
       </div>
-      <Toast isOpen={isSuccess} message={"Medical certificate successfully generated!"} onClose={handleSuccessToastClose}/>
+      <Toast isOpen={isSuccess} message={"New staff successfully added!"} onClose={handleSuccessToastClose}/>
       <Toast isOpen={isError} message={"Error encountered"} onClose={handleErrorToastClose} isError/>
     </section>
   );

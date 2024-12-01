@@ -8,24 +8,15 @@ const sseEventNames = {
 
 const useSSE = (url: string) => {
   const [queueTrigger, setQueueTrigger] = useState<boolean>(false);
-  const [aptConfTrigger, setAptConfTrigger] = useState<boolean>(false);
-  const [aptArrivalTrigger, setAptArrivalTrigger] = useState<boolean>(false);
   const [isFirstConnection, setIsFirstConnection] = useState<boolean>(true);
 
   useEffect(() => {
     const eventSource = new EventSource(url);
 
-    eventSource.addEventListener(sseEventNames.queueCheckin, () => {
+    eventSource.onmessage = () => {
+      console.log("triggered");
       setQueueTrigger((prev) => !prev);
-    });
-
-    eventSource.addEventListener(sseEventNames.appointmentConfirmation, () => {
-      setAptConfTrigger((prev) => !prev);
-    });
-
-    eventSource.addEventListener(sseEventNames.appointmentArrival, () => {
-      setAptArrivalTrigger((prev) => !prev);
-    });
+    }
 
     eventSource.onerror = (error: Event) => {
       if (isFirstConnection) {
@@ -41,7 +32,7 @@ const useSSE = (url: string) => {
     };
   }, [url]);
 
-  return { queueTrigger, aptConfTrigger, aptArrivalTrigger };
+  return { queueTrigger };
 };
 
 export default useSSE;

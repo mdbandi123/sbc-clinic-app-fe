@@ -63,31 +63,25 @@ const columns: readonly Column[] = [
 ];
 
 function SearchAppointment() {
-  const {aptArrivalTrigger, aptConfTrigger} = useSSE(`${BASE_URL}/api/sse/subscribe`);
   const [searchType, setSearchType] = useState<string>("");
   const [searchText, setSearchText] = useState<string>("");
   const [isCompletedShown, setIsCompletedShown] = useState<boolean>(false);
   const {setToolbarTitle} = useStore()
 
-  const { data, refetch, isFetched } = useQuery({
-    queryKey: ["appointment", aptArrivalTrigger, aptConfTrigger],
+  const { data, isFetchedAfterMount } = useQuery({
+    queryKey: ["appointment"],
     queryFn: getAllAppointments,
     placeholderData: [],
+    refetchOnMount: "always"
   });
   const [appointmentList, setAppointmentList] = useState<AppointmentResponse[]>(
     []
   );
 
   useEffect(() => {
-    if (isFetched) {
       setAppointmentList(data);
-    }
-  }, [isFetched]);
+  }, [isFetchedAfterMount]);
 
-  
-  useEffect(()=>{
-    refetch();
-  }, [aptArrivalTrigger, aptConfTrigger])
 
   useEffect(() => {
     setToolbarTitle('List Appointments')

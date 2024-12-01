@@ -77,18 +77,17 @@ function SearchStaff() {
   const [resetSearchToggle, setResetSearchToggle] = useState<boolean>(false);
   const { setStaffEditFormData, setIsSuccessfulStaffEdit, isSuccessfulStaffEdit, staffTrigger, setToolbarTitle } = useStore();
   const navigate = useNavigate();
-  const { data, isSuccess, isFetched } = useQuery({
-    queryKey: ["staff" ,staffTrigger],
+  const { data, isFetchedAfterMount } = useQuery({
+    queryKey: ["staff"],
     queryFn: getAllStaff,
     placeholderData: [],
+    refetchOnMount: "always"
   });
   const [staffList, setStaffList] = useState<StaffResponse[]>([]);
 
   useEffect(() => {
-    if (isFetched) {
       setStaffList(data);
-    }
-  }, [isFetched, resetSearchToggle]);
+  }, [isFetchedAfterMount, resetSearchToggle]);
 
   useEffect(() => {
     setToolbarTitle('List Staff')
@@ -168,7 +167,7 @@ function SearchStaff() {
       </Grid2>
       <Toast
         isOpen={isSuccessfulStaffEdit}
-        message={"Patient details successfully changed!"}
+        message={"Staff details successfully changed!"}
         onClose={handleEditSuccessToastClose}
       />
     </section>

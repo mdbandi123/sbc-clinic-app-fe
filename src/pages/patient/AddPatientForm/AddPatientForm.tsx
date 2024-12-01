@@ -35,7 +35,6 @@ const initialState: PatientReducerState = {
 function AddPatientForm() {
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
-  const queryClient = useQueryClient();
   const { setToolbarTitle } =
     useStore();
   const [state, dispatch] = useReducer<
