@@ -7,21 +7,17 @@ import {
 } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import { useEffect, useReducer, useState } from "react";
-import {
-  getPatientByIcNo,
-  getPatientById,
-  getPatientByName,
-  insertPatient,
-} from "../../../util/requests/patientRequest";
-import styles from "./AddMedCert.module.css";
+import Toast from "../../../components/feedback/Toast";
 import Form from "../../../components/form/Form";
 import SearchField from "../../../components/input/SearchField";
-import { insertAppointment } from "../../../util/requests/appointmentRequest";
-import { insertMedCert } from "../../../util/requests/medicalCertificateRequest";
-import useStore from "../../../util/store/store";
 import InitialDataScreen from "../../../components/table/InitialDataScreen/InitialDataScreen";
 import NoDataScreen from "../../../components/table/NoDataFound/NoDataScreen";
-import Toast from "../../../components/feedback/Toast";
+import { insertMedCert } from "../../../util/requests/medicalCertificateRequest";
+import {
+  getPatientByName
+} from "../../../util/requests/patientRequest";
+import useStore from "../../../util/store/store";
+import styles from "./AddMedCert.module.css";
 
 type ActionType = {
   type: string;

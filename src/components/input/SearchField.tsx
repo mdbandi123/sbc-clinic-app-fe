@@ -1,5 +1,5 @@
 import { Search } from "@mui/icons-material";
-import { TextField, InputAdornment } from "@mui/material";
+import { InputAdornment, TextField } from "@mui/material";
 import { ChangeEventHandler } from "react";
 
 type SearchFieldProps = {

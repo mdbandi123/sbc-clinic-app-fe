@@ -1,28 +1,25 @@
-import { Search } from "@mui/icons-material";
 import {
   Button,
   Grid2,
-  InputAdornment,
   MenuItem,
-  SelectChangeEvent,
-  TextField,
+  SelectChangeEvent
 } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+import Toast from "../../../components/feedback/Toast";
 import SearchField from "../../../components/input/SearchField";
 import SelectDropdown from "../../../components/input/SelectDropdown";
-import styles from "./SearchStaff.module.css";
-import { useEffect, useState } from "react";
 import DataTable, { Column } from "../../../components/table/DataTable";
-import useStore from "../../../util/store/store";
-import { useNavigate } from "react-router";
-import { routes } from "../../../util/routes/routes";
 import {
+  getAllStaff,
   getStaffByIcNo,
   getStaffById,
   getStaffByName,
-  getAllStaff,
 } from "../../../util/requests/staffRequest";
-import { useQuery } from "@tanstack/react-query";
-import Toast from "../../../components/feedback/Toast";
+import { routes } from "../../../util/routes/routes";
+import useStore from "../../../util/store/store";
+import styles from "./SearchStaff.module.css";
 
 type StaffResponse = {
   staffId: number;
@@ -75,7 +72,7 @@ function SearchStaff() {
   const [searchType, setSearchType] = useState<string>("");
   const [searchText, setSearchText] = useState<string>("");
   const [resetSearchToggle, setResetSearchToggle] = useState<boolean>(false);
-  const { setStaffEditFormData, setIsSuccessfulStaffEdit, isSuccessfulStaffEdit, staffTrigger, setToolbarTitle } = useStore();
+  const { setStaffEditFormData, setIsSuccessfulStaffEdit, isSuccessfulStaffEdit, setToolbarTitle } = useStore();
   const navigate = useNavigate();
   const { data, isFetchedAfterMount } = useQuery({
     queryKey: ["staff"],

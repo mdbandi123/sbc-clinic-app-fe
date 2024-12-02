@@ -1,12 +1,3 @@
-import { ReactNode } from "react";
-import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
-import CssBaseline from "@mui/material/CssBaseline";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
-import NavButton from "./NavButton";
 import {
   Accessible,
   AddBox,
@@ -19,11 +10,20 @@ import {
   Search,
   SupervisorAccount,
 } from "@mui/icons-material";
-import { routes } from "../../util/routes/routes";
-import NavCollapsingButton from "./NavCollapsingButton";
-import SBClinicLogo from "../../assets/SB-Clinic.png";
 import { Typography } from "@mui/material";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import CssBaseline from "@mui/material/CssBaseline";
+import Divider from "@mui/material/Divider";
+import Drawer from "@mui/material/Drawer";
+import List from "@mui/material/List";
+import Toolbar from "@mui/material/Toolbar";
+import { ReactNode } from "react";
+import SBClinicLogo from "../../assets/SB-Clinic.png";
+import { routes } from "../../util/routes/routes";
 import useStore from "../../util/store/store";
+import NavButton from "./NavButton";
+import NavCollapsingButton from "./NavCollapsingButton";
 
 const drawerWidth = 240;
 

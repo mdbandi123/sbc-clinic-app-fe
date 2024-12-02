@@ -1,11 +1,11 @@
-import { useEffect, useReducer, useState } from "react";
-import styles from "./AddStaffForm.module.css";
-import { useMutation } from "@tanstack/react-query";
 import { Button } from "@mui/material";
+import { useMutation } from "@tanstack/react-query";
+import { useEffect, useReducer, useState } from "react";
+import Toast from "../../../components/feedback/Toast";
 import Form from "../../../components/form/Form";
 import { insertStaff } from "../../../util/requests/staffRequest";
 import useStore from "../../../util/store/store";
-import Toast from "../../../components/feedback/Toast";
+import styles from "./AddStaffForm.module.css";
 
 type StaffState = {
   name: string;

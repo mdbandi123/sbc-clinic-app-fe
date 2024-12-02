@@ -1,25 +1,19 @@
-import { Grid2, MenuItem, Button, SelectChangeEvent } from "@mui/material";
+import { Button, Grid2, MenuItem, SelectChangeEvent } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import SearchField from "../../../components/input/SearchField";
 import SelectDropdown from "../../../components/input/SelectDropdown";
 import DataTable, { Column } from "../../../components/table/DataTable";
-import styles from "./SearchReport.module.css";
-import { useEffect, useState } from "react";
-import {
-  getAppointmentByName,
-  getAppointmentByIcNo,
-  getAppointmentById,
-  getAllAppointments,
-} from "../../../util/requests/appointmentRequest";
-import { useQuery } from "@tanstack/react-query";
-import { useNavigate } from "react-router";
-import { routes } from "../../../util/routes/routes";
-import useStore from "../../../util/store/store";
 import {
   getAllReports,
   getReportByIcNo,
   getReportById,
   getReportByName,
 } from "../../../util/requests/reportRequest";
+import { routes } from "../../../util/routes/routes";
+import useStore from "../../../util/store/store";
+import styles from "./SearchReport.module.css";
 
 const columns: readonly Column[] = [
   { id: "reportId", label: "Report ID", minWidth: 100 },

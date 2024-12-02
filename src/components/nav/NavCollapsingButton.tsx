@@ -1,12 +1,12 @@
-import { ReactNode, useState } from "react";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import {
+  Collapse,
   List,
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Collapse,
 } from "@mui/material";
+import { ReactNode, useState } from "react";
 
 type NavCollapsingButtonProps = {
   icon: ReactNode;

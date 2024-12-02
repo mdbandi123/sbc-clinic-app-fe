@@ -1,16 +1,15 @@
-import { Reducer, useEffect, useReducer, useState } from "react";
-import Form from "../../../components/form/Form";
-import styles from "./EditPatientForm.module.css";
 import { Button } from "@mui/material";
-import {
-  insertPatient,
-  updatePatient,
-} from "../../../util/requests/patientRequest";
 import { useMutation } from "@tanstack/react-query";
-import useStore from "../../../util/store/store";
-import Toast from "../../../components/feedback/Toast";
+import { Reducer, useEffect, useReducer, useState } from "react";
 import { useNavigate } from "react-router";
+import Toast from "../../../components/feedback/Toast";
+import Form from "../../../components/form/Form";
+import {
+  updatePatient
+} from "../../../util/requests/patientRequest";
 import { routes } from "../../../util/routes/routes";
+import useStore from "../../../util/store/store";
+import styles from "./EditPatientForm.module.css";
 
 type PatientReducerState = {
   name: string;

@@ -1,6 +1,6 @@
 import { ContentPasteSearch } from "@mui/icons-material";
-import styles from "./InitialDataScreen.module.css"
 import { Typography } from "@mui/material";
+import styles from "./InitialDataScreen.module.css";
 
 function InitialDataScreen() {
   return <div className={styles.mainCont}>

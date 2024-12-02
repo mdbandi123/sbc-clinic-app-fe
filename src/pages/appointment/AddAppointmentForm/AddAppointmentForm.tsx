@@ -1,26 +1,22 @@
 import {
   Button,
   Grid2,
-  SelectChangeEvent,
   TextField,
-  Typography,
+  Typography
 } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import { ChangeEventHandler, useEffect, useReducer, useState } from "react";
-import {
-  getPatientByIcNo,
-  getPatientById,
-  getPatientByName,
-  insertPatient,
-} from "../../../util/requests/patientRequest";
-import styles from "./AddAppointmentForm.module.css";
+import Toast from "../../../components/feedback/Toast";
 import Form from "../../../components/form/Form";
 import SearchField from "../../../components/input/SearchField";
-import { insertAppointment } from "../../../util/requests/appointmentRequest";
-import useStore from "../../../util/store/store";
 import InitialDataScreen from "../../../components/table/InitialDataScreen/InitialDataScreen";
 import NoDataScreen from "../../../components/table/NoDataFound/NoDataScreen";
-import Toast from "../../../components/feedback/Toast";
+import { insertAppointment } from "../../../util/requests/appointmentRequest";
+import {
+  getPatientByIcNo
+} from "../../../util/requests/patientRequest";
+import useStore from "../../../util/store/store";
+import styles from "./AddAppointmentForm.module.css";
 
 type ActionType = {
   type: string;

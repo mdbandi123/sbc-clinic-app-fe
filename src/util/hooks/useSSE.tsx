@@ -1,10 +1,4 @@
-import { useState, useEffect } from "react";
-
-const sseEventNames = {
-  queueCheckin: "queueCheckin",
-  appointmentConfirmation: "appointmentConfirmation",
-  appointmentArrival: "appointmentArrival"
-};
+import { useEffect, useState } from "react";
 
 const useSSE = (url: string) => {
   const [queueTrigger, setQueueTrigger] = useState<boolean>(false);

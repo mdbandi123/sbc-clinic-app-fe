@@ -1,27 +1,14 @@
-import { Search } from "@mui/icons-material";
 import {
   Button,
   Grid2,
-  InputAdornment,
   MenuItem,
-  SelectChangeEvent,
-  TextField,
+  SelectChangeEvent
 } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import SearchField from "../../../components/input/SearchField";
 import SelectDropdown from "../../../components/input/SelectDropdown";
-import styles from "./SearchAppointment.module.css";
-import { useEffect, useState } from "react";
 import DataTable, { Column } from "../../../components/table/DataTable";
-import useStore from "../../../util/store/store";
-import { useNavigate } from "react-router";
-import { BASE_URL, routes } from "../../../util/routes/routes";
-import {
-  getStaffByIcNo,
-  getStaffById,
-  getStaffByName,
-  getAllStaff,
-} from "../../../util/requests/staffRequest";
-import { useQuery } from "@tanstack/react-query";
 import {
   getAllAppointments,
   getAppointmentByIcNo,
@@ -30,9 +17,8 @@ import {
   updateAppointmentArrivalStatus,
   updateAppointmentConfirmationStatus,
 } from "../../../util/requests/appointmentRequest";
-import dayjs from "dayjs";
-import { formatDate } from "../../../util/functions/date";
-import useSSE from "../../../util/hooks/useSSE";
+import useStore from "../../../util/store/store";
+import styles from "./SearchAppointment.module.css";
 
 type AppointmentResponse = {
   appointmentId: number;

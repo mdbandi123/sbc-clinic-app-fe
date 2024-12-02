@@ -1,6 +1,6 @@
-import { ContentPasteSearch, PersonOff } from "@mui/icons-material";
-import styles from "./NoDataScreen.module.css"
+import { PersonOff } from "@mui/icons-material";
 import { Typography } from "@mui/material";
+import styles from "./NoDataScreen.module.css";
 
 function NoDataScreen() {
   return <div className={styles.mainCont}>

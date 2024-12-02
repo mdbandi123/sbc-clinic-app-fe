@@ -2,20 +2,19 @@ import { Button, Grid2, MenuItem, SelectChangeEvent } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { ChangeEventHandler, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import Toast from "../../../components/feedback/Toast";
 import SearchField from "../../../components/input/SearchField";
 import SelectDropdown from "../../../components/input/SelectDropdown";
 import DataTable, { Column } from "../../../components/table/DataTable";
-import useSSE from "../../../util/hooks/useSSE";
 import {
   getAllPatients,
   getPatientByIcNo,
   getPatientById,
   getPatientByName,
 } from "../../../util/requests/patientRequest";
-import { BASE_URL, routes } from "../../../util/routes/routes";
+import { routes } from "../../../util/routes/routes";
 import useStore from "../../../util/store/store";
 import styles from "./SearchPatient.module.css";
-import Toast from "../../../components/feedback/Toast";
 
 type PatientResponse = {
   patientId: number;
@@ -65,11 +64,8 @@ function SearchPatient() {
   const {
     setPatientEditFormData,
     setToolbarTitle,
-    patientTrigger,
     isSuccessfulPatientEdit,
     setIsSuccessfulPatientEdit,
-    isSuccessfulPatientAdd,
-    setIsSuccessfulPatientAdd,
   } = useStore();
   const navigate = useNavigate();
   const { data, isFetchedAfterMount } = useQuery({

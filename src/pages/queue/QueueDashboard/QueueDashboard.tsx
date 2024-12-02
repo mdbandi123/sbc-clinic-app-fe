@@ -1,15 +1,15 @@
 import { Grid2 } from "@mui/material";
-import styles from "./QueueDashboard.module.css";
-import DataTable, { Column } from "../../../components/table/DataTable";
 import { useQuery } from "@tanstack/react-query";
+import { useEffect, useMemo } from "react";
+import DataTable, { Column } from "../../../components/table/DataTable";
+import useSSE from "../../../util/hooks/useSSE";
 import {
   getQueueOfPatientsNotCheckedIn,
   updateCheckIn,
 } from "../../../util/requests/queueRequest";
-import { useEffect, useMemo } from "react";
-import useStore from "../../../util/store/store";
-import useSSE from "../../../util/hooks/useSSE";
 import { BASE_URL } from "../../../util/routes/routes";
+import useStore from "../../../util/store/store";
+import styles from "./QueueDashboard.module.css";
 
 const columns: readonly Column[] = [
   {
