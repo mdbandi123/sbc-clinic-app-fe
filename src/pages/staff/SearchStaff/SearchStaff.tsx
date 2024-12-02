@@ -77,7 +77,7 @@ function SearchStaff() {
   const { data, isFetchedAfterMount } = useQuery({
     queryKey: ["staff"],
     queryFn: getAllStaff,
-    placeholderData: [],
+    initialData: [],
     refetchOnMount: "always"
   });
   const [staffList, setStaffList] = useState<StaffResponse[]>([]);

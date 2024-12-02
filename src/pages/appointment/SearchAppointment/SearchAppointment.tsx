@@ -57,8 +57,8 @@ function SearchAppointment() {
   const { data, isFetchedAfterMount } = useQuery({
     queryKey: ["appointment"],
     queryFn: getAllAppointments,
-    placeholderData: [],
-    refetchOnMount: "always"
+    refetchOnMount: "always",
+    initialData: []
   });
   const [appointmentList, setAppointmentList] = useState<AppointmentResponse[]>(
     []

@@ -20,7 +20,7 @@ function AddReportForm() {
   const { data } = useQuery({
     queryKey: ["staff"],
     queryFn: getAllStaff,
-    placeholderData: [],
+    initialData: [],
   });
 
   const mutation = useMutation({

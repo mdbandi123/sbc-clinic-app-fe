@@ -42,7 +42,7 @@ function AppointmentReport() {
   const { data, isFetchedAfterMount } = useQuery({
     queryKey: ["appointment"],
     queryFn: getAllAppointments,
-    placeholderData: [],
+    initialData: [],
   });
 
   useEffect(() => {

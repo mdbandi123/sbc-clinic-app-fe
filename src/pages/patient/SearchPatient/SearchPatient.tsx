@@ -72,7 +72,7 @@ function SearchPatient() {
     queryKey: ["patient"],
     queryFn: getAllPatients,
     initialData: [],
-    refetchOnMount: "always"
+    refetchOnMount: "always",
   });
   const [patientList, setPatientList] = useState<PatientResponse[]>([]);
 

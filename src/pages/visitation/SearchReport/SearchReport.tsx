@@ -43,7 +43,7 @@ function SearchReport() {
   const { data, isFetchedAfterMount } = useQuery({
     queryKey: ["report"],
     queryFn: getAllReports,
-    placeholderData: [],
+    initialData: [],
     refetchOnMount: "always"
   });
 
